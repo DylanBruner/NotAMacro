@@ -377,7 +377,7 @@ export default class IslandForager extends Macro {
             } else if (this.stage == STAGE_WAITING_FOR_PLACE){
                 if (this.getTreeCount() == 3){
                     this.stage = STAGE_PLANTING;
-                    ChatLib.chat("detected change from " + this.lastTreeCount + " to " + this.getTreeCount());
+                    debug("&3detected change from " + this.lastTreeCount + " to " + this.getTreeCount() + ", planting saplings");
                     this.lastTreeCount = this.getTreeCount();
                 }
             } else {
