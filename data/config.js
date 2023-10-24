@@ -12,10 +12,11 @@ import {
     // configs
 } from '../../Vigilance/index';
 import Core from "../helpers/core";
+import Consts from "../data/shared";
 
 // SettingsGui = Java.type('gg.essential.vigilance.gui.SettingsGui');
 
-@Vigilant("NotAMacro", "NotAMacro", {
+@Vigilant("NotAMacro", "§5NotAMacro §zv" + Consts.version, {
     getCategoryComparator: () => (a, b) => {
         Core.init(this);
         return l.indexOf(a.name) - l.indexOf(b.name);
