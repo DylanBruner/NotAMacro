@@ -58,19 +58,18 @@ export default class IslandForager extends Macro {
         this.lastTreeCount = 0;
         this.step = 0;
         this.points = [
-            [-61.1, 34.7],
-            // [-71.9, 31.9]
-            [-70.9, 32.7]
+            [-61.1, 34.7],    
+            [-71.9, 31.9]
         ]
 
-        this.laststage = this.stage;
+        this.laststage = 0;
         this.sameticks = 0;
         this.fixing = false;
         this.failureSlots = [
-            {yaw: -91.6, pitch: 59.1, x: 1, z: 0}, // front left
-            {yaw: -90.9, pitch: 38.4, x: 2, z: 0}, // back left
-            {yaw: -45.6, pitch: 43.7, x: 1, z: 1}, // back right
-            {yaw: -61.3, pitch: 36.5, x: 2, z: 1}  // front right
+            [-85.9, 39.4],
+            [-65.0, 36.5],
+            [-47.4, 48.7],
+            [-86.8, 57.6]
         ]
         
         // Some movement variables & player variables
@@ -99,17 +98,17 @@ export default class IslandForager extends Macro {
     }
 
     setYaw(yaw){
-        if (yaw > 180 || yaw < -180 || !(yaw < 180 && yaw > -180) || yaw == NaN) { // so many checks just in case
+        if (yaw > 180 || yaw < -180 || yaw == NaN) {
             ChatLib.chat(ERROR_PREFIX + "Attmpeted to set yaw to " + yaw + " but yaw must be between -180 and 180 (ignored update)");
             this.tripped = true;
             this.reason = "Yaw out of bounds";
             return;
-        }
+        } 
         Client.getMinecraft().field_71439_g.field_70177_z = yaw;
     }
 
     setPitch(pitch){
-        if (pitch > 90 || pitch < -90 || !(pitch < 90 && pitch > -90) || pitch == NaN) { // so many checks just in case
+        if (pitch > 90 || pitch < -90 || pitch == NaN) {
             ChatLib.chat(ERROR_PREFIX + "Attmpeted to set pitch to " + pitch + " but pitch must be between -90 and 90 (ignored update)");
             this.tripped = true;
             this.reason = "Pitch out of bounds";
@@ -179,18 +178,15 @@ export default class IslandForager extends Macro {
         }
     }
 
-    // stuff =====================================================================
-    getPlacementBlocks(){
-        return [
-            World.getBlockAt(Player.getX() + 1, Player.getY(), Player.getZ()),
-            World.getBlockAt(Player.getX(), Player.getY(), Player.getZ()),
-            World.getBlockAt(Player.getX() + 1, Player.getY(), Player.getZ() + 1),
-            World.getBlockAt(Player.getX(), Player.getY(), Player.getZ() + 1)
-        ];
-    }
-
+    // stuff
     getTreeCount(){
-        let blocks = this.getPlacementBlocks();
+        let blocks = [
+            World.getBlockAt(Player.getX() + 1, Player.getY(), Player.getZ()),
+            World.getBlockAt(Player.getX() + 2, Player.getY(), Player.getZ()),
+            World.getBlockAt(Player.getX() + 1, Player.getY(), Player.getZ() + 1),
+            World.getBlockAt(Player.getX() + 2, Player.getY(), Player.getZ() + 1)
+        ];
+
         let saplingCount = 0;
 
         for (let i = 0; i < blocks.length; i++){
@@ -289,25 +285,13 @@ export default class IslandForager extends Macro {
 
         // ============================================================================
 
+
         if (this.laststage == this.stage && !this.fixing){
             this.sameticks++;
             if (this.sameticks > 40){
-                const px = Math.floor(Player.getX());
-                const pz = Math.floor(Player.getZ());
-
-                debug(`§cDetected error in stage ${this.stage}, step ${this.step}, fixing...`)
+                debug("§cDetected error in stage " + this.stage + ", resetting");
                 this.fixing = true;
                 this.step = 0;
-                this.failureSteps = [];
-
-                for (let i = 0; i < this.failureSlots.length; i++){
-                    const slot = this.failureSlots[i];
-                    if (World.getBlockAt(px + slot.x, Player.getY(), pz + slot.z).type.getName() != 'tile.air.name'){
-                        this.failureSteps.push([slot.yaw, slot.pitch, [px + slot.x, Player.getY(), pz + slot.z]]);
-                    }
-                }
-
-                debug(`§cApplying ${this.failureSteps.length} fixes`);
             }
         } else {
             this.sameticks = 0;
@@ -318,11 +302,7 @@ export default class IslandForager extends Macro {
             if (this.movingToTarget) {this.tickPitchAndYaw(); return;}
 
             this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
-            if (this.step >= this.failureSteps.length){
-                this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
-                setTimeout(() => {
-                    this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
-                }, 200);
+            if (this.step >= this.failureSlots.length){
                 debug("&cFixed!")
 
                 // reset variables
@@ -339,24 +319,21 @@ export default class IslandForager extends Macro {
                     this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
                 }, 200);
                 this.setSlot(this.axeSlot);
-
-                // check if the next block is air already
-                if (World.getBlockAt(this.failureSteps[this.step][2][0], this.failureSteps[this.step][2][1], this.failureSteps[this.step][2][2]).type.getName() == 'tile.air.name'){
-                    debug(`§cBlock(${this.failureSteps[this.step][2][0]}, ${this.failureSteps[this.step][2][1]}, ${this.failureSteps[this.step][2][2]}) is already air, skipping`);
-                    this.step++;
-                    return;
-                } else {
-                    this.gotoPY(this.failureSteps[this.step][0], this.failureSteps[this.step][1]);
-                }
+                this.gotoPY(this.failureSlots[this.step][0], this.failureSlots[this.step][1]);
                 this.step++;
-                this.globalcooldown = 10;
+                this.globalcooldown = 5;
             }
 
             return;
         }
 
         if (this.stage == STAGE_WAITING_FOR_BREAK || this.stage == STAGE_WAITING_FOR_GROWTH || this.stage == STAGE_WAITING_FOR_PLACE){
-            let blocks = this.getPlacementBlocks();
+            let blocks = [
+                World.getBlockAt(Player.getX() + 1, Player.getY(), Player.getZ()),
+                World.getBlockAt(Player.getX() + 2, Player.getY(), Player.getZ()),
+                World.getBlockAt(Player.getX() + 1, Player.getY(), Player.getZ() + 1),
+                World.getBlockAt(Player.getX() + 2, Player.getY(), Player.getZ() + 1)
+            ]
             
             let saplingCount = 0;
             let woodCount = 0;
@@ -374,17 +351,13 @@ export default class IslandForager extends Macro {
             } else if (this.stage == STAGE_WAITING_FOR_GROWTH && saplingCount == 0){
                 this.stage = STAGE_BREAKING;
                 debug("§3Detected tree growth, breaking trees");
-            } else if (this.stage == STAGE_WAITING_FOR_PLACE){
-                if (this.getTreeCount() == 3){
-                    this.stage = STAGE_PLANTING;
-                    ChatLib.chat("detected change from " + this.lastTreeCount + " to " + this.getTreeCount());
-                    this.lastTreeCount = this.getTreeCount();
-                }
+            } else if (this.stage == STAGE_WAITING_FOR_PLACE && saplingCount != this.lastTreeCount){
+                this.stage = STAGE_PLANTING;
+                ChatLib.chat("§3Detected tree count change, planting saplings &c" + saplingCount + " " + this.lastTreeCount);
             } else {
                 return;
             }
         }
-
 
         // Main code
         if (this.movingToTarget){
@@ -409,7 +382,11 @@ export default class IslandForager extends Macro {
                 } else {
                     this.gotoPY(this.points[this.step][0], this.points[this.step][1]);
                     this.step++;
-                    this.stage = STAGE_WAITING_FOR_PLACE;
+                    this.globalcooldown = 7;
+                    // this.stage = STAGE_WAITING_FOR_PLACE;
+                    this.lastTreeCount = this.getTreeCount();
+                    ChatLib.chat("§3Planting saplings")
+                    // this.myRobot.mouseRelease(InputEvent.BUTTON3_MASK);
                 }
                 debug("§3Planting saplings");
             } else if (this.stage == STAGE_BONEMEAL){
@@ -421,7 +398,7 @@ export default class IslandForager extends Macro {
                 if (Player.getHeldItemIndex() != this.axeSlot){
                     this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
                     this.setSlot(this.axeSlot);
-                    // this.globalcooldown = 7;
+                    // this.globalcooldown = 10;
                     this.stage = STAGE_WAITING_FOR_BREAK;
                 }
                 debug("§3Breaking trees");
@@ -429,6 +406,7 @@ export default class IslandForager extends Macro {
                 setTimeout(() => {
                     this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
                 }, 500);
+                // ChatLib.command("fill -82 68 1025 -78 70 1027 air");
             }
         }
     };

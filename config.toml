@@ -7,7 +7,7 @@
 	warp_back_commands = "skyblock, warp garden"
 
 [island_forager]
-	debug_mode = false
+	debug_mode = true
 	sapling_slot = 1
 	bone_meal_slot = 2
 	axe_slot = 3
