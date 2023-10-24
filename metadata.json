@@ -1,0 +1,8 @@
+{
+    "name": "Not A Macro",
+    "creator": "CheatersGetBanned",
+    "version": "1.0.0",
+    "description": "cheatersgetbanned",
+    "requires": [],
+    "entry": "index.js"
+  }
