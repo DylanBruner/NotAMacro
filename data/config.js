@@ -43,7 +43,7 @@ class Config {
     @SelectorProperty({
         name: "Selected Macro",
         category: "General",
-        options: ["Mushroom", "Cane", "AD Macro", "Island Forager", "Warp Back", "Cactus", "Cocoa"],
+        options: ["Mushroom", "Cane", "AD Macro", "Island Forager", "Warp Back", "Cactus", "Cocoa", "Pumpkin/Melon"],
     })
     SelectedMacro = 0;
 
@@ -369,6 +369,14 @@ class Config {
         options: ["Right", "Left"]
     })
     CactusStartDirection = 0;
+
+    // Pumpkin/Melon Macro ======================================================
+    @SelectorProperty({
+        name: "Start Direction",
+        category: "Pumpkin/Melon",
+        options: ["Right", "Left"]
+    })
+    PumpkinMelonStartDirection = 0;
 
     // Cocoa Macro ==============================================================
     @SelectorProperty({

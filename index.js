@@ -8,6 +8,7 @@ import Cane from "./macros/cane";
 import CocoaMacro from "./macros/cocoamacro";
 import IslandForager from "./macros/islandforager";
 import Mushroom from "./macros/mushroom";
+import PumpkinMelonMacro from "./macros/pumpkinmelon";
 import WarpBack from "./macros/warpback";
 
 const pauseKey = new KeyBind("Toggle Key", Keyboard.KEY_SEMICOLON, "NotAMacro")
@@ -28,7 +29,7 @@ const scope = new Scope();
 const generalUtils = new GeneralUtils();
 const macros = [
     Mushroom, Cane, ADMacro, IslandForager, 
-    WarpBack, CactusMacro, CocoaMacro
+    WarpBack, CactusMacro, CocoaMacro, PumpkinMelonMacro
 ]
 
 // overide Config.reloadMacros
