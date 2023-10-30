@@ -43,9 +43,26 @@ class Config {
     @SelectorProperty({
         name: "Selected Macro",
         category: "General",
-        options: ["Mushroom", "Cane", "AD Macro", "Island Forager", "Warp Back"]
+        options: ["Mushroom", "Cane", "AD Macro", "Island Forager", "Warp Back", "Cactus", "Cocoa"],
     })
     SelectedMacro = 0;
+
+    // Configs for all macros ===================================================
+    @SwitchProperty({
+        name: "Quick Death",
+        description: "Detects void drops and runs /warp garden",
+        category: "General Macro Config",
+    })
+    GeneralMacroConfigQuickDeath = true;
+
+    @SliderProperty({
+        name: "Quick Death Distance",
+        description: "The distance to check for void drops",
+        category: "General Macro Config",
+        min: 1,
+        max: 10
+    })
+    GeneralMacroConfigQuickDeathDistance = 5;
 
     // FailSafes ================================================================
     @SwitchProperty({
@@ -256,7 +273,7 @@ class Config {
         category: "Island Forager"
     })
     IslandForagerSingleMode = false;
-    
+
     @SliderProperty({
         name: "Sapling Slot",
         description: "The slot with the saplings",
@@ -332,9 +349,34 @@ class Config {
     @SwitchProperty({
         name: "Debug Mode",
         description: "Prints debug messages in chat",
-        category: "Island Forager"
+        category: "Island Forager",
+        subcategory: "Debug"
     })
     IslandForagerDebugMode = false;
+
+    @SwitchProperty({
+        name: "Verbose Mode",
+        description: "Prints too many debug messages in chat",
+        category: "Island Forager",
+        subcategory: "Debug"
+    })
+    IslandForagerVerboseMode = false;
+
+    // Cactus Macro =============================================================
+    @SelectorProperty({
+        name: "Start Direction",
+        category: "Cactus",
+        options: ["Right", "Left"]
+    })
+    CactusStartDirection = 0;
+
+    // Cocoa Macro ==============================================================
+    @SelectorProperty({
+        name: "Start Direction",
+        category: "Cocoa",
+        options: ["Forward", "Backward"]
+    })
+    CocoaStartDirection = 0;
 
     // Warp Back ================================================================
     @TextProperty({

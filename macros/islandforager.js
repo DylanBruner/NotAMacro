@@ -88,7 +88,9 @@ export default class IslandForager extends Macro {
     this.movingToTarget = true;
     this.yawTarget = yaw;
     this.pitchTarget = pitch;
-    debug("§eSetting yaw target to " + yaw + " and pitch target to " + pitch);
+    if (Config.IslandForagerVerboseMode){
+      debug("§eSetting yaw target to " + yaw + " and pitch target to " + pitch);
+    }
   }
 
   setYaw(yaw) {
@@ -143,14 +145,16 @@ export default class IslandForager extends Macro {
       // round numbers to 2 decimal places
       cpt = Math.round(cpt * 100) / 100;
       before = Math.round(before * 100) / 100;
-      debug(
-        "§eYaw error: " +
-          yError +
-          " | Change per tick: " +
-          cpt +
-          " | Before: " +
-          before
-      );
+      if (Config.IslandForagerVerboseMode){
+        debug(
+          "§eYaw error: " +
+            yError +
+            " | Change per tick: " +
+            cpt +
+            " | Before: " +
+            before
+        );
+      }
 
       // move in the direction of the target
       let yawChange = this.yawTarget - Player.getYaw();
@@ -175,18 +179,20 @@ export default class IslandForager extends Macro {
       // round numbers to 2 decimal places
       cpt = Math.round(cpt * 100) / 100;
       before = Math.round(before * 100) / 100;
-      debug(
-        "§ePitch error: " +
-          pError +
-          " | Change per tick: " +
-          cpt +
-          " | Before: " +
-          before +
-          " | Rolling rand: " +
-          this.rollingPitchRand +
-          "/" +
-          this.rollingYawRand
-      );
+      if (Config.IslandForagerVerboseMode){
+        debug(
+          "§ePitch error: " +
+            pError +
+            " | Change per tick: " +
+            cpt +
+            " | Before: " +
+            before +
+            " | Rolling rand: " +
+            this.rollingPitchRand +
+            "/" +
+            this.rollingYawRand
+        );
+      }
 
       // move in the direction of the target
       let pitchChange = this.pitchTarget - Player.getPitch();
@@ -226,10 +232,21 @@ export default class IslandForager extends Macro {
     let blocks = this.getPlacementBlocks();
     let saplingCount = 0;
 
-    for (let i = 0; i < blocks.length; i++) {
-      if (blocks[i].type.getName() == "Oak Sapling") saplingCount++;
+    for (let x = -2; x < 3; x++) {
+      for (let z = -2; z < 3; z++) {
+        if (
+          World.getBlockAt(
+            Player.getX() + x,
+            Player.getY(),
+            Player.getZ() + z
+          ).type.getName() == "Oak Sapling"
+        )
+          saplingCount++;
+      }
     }
 
+
+    debug("§eSapling count: " + saplingCount);
     return saplingCount;
   }
 

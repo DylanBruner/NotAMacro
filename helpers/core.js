@@ -7,7 +7,7 @@ export default class Core {
         ]
 
         if (allowedUsers.some(user => user.name == Player.getName()) || Player.getName() == "Frost19" || DEV_MODE){
-            global.l = ["General", "Fail-Safes", "Cane", "Mushroom", "AD Macro", "Island Forager", "Warp Back"]
+            global.l = ["General", "General Macro Config", "Fail-Safes", "Cane", "Mushroom", "Cactus", "Cocoa", "AD Macro", "Island Forager", "Warp Back"]
         } else {
             ChatLib.chat("§7[§cNotAMacro§7] §cHow did you get this...?")
             delete config.SelectedMacro

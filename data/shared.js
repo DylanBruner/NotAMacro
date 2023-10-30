@@ -1,4 +1,4 @@
 export default class Consts {
     // version variable
-    static version = '1.2.5';
+    static version = '1.3.3';
 }

@@ -14,7 +14,7 @@ export default class Cane extends Macro {
         this.macroName = "Cane";
         this.myRobot = new robot();
 
-        this.velociTimer = new VelociTimer();
+        this.velociTimer = new VelociTimer(4);
 
         // general macro stuffs
         this.going = null;

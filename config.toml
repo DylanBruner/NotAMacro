@@ -1,6 +1,6 @@
 
 [general]
-	selected_macro = 3
+	selected_macro = 5
 
 [warp_back]
 	server_ip = "mc.hypixel.net:25565"
@@ -11,11 +11,16 @@
 	sapling_slot = 1
 	bone_meal_slot = 2
 	axe_slot = 3
+	verbose_mode = false
 	single_mode = false
+
+	[island_forager.debug]
+		debug_mode = false
+		verbose_mode = false
 
 	[island_forager.inventory]
 		sapling_slot = 5
-		bone_meal_slot = 4
+		bone_meal_slot = 3
 		axe_slot = 1
 
 	[island_forager.movement]
@@ -27,8 +32,19 @@
 		"disable_normal_fail-safes_(except_world_change)" = true
 		"stop_on_yaw/pitch_change" = true
 
-[cane]
+[general_macro_config]
+	quick_death = true
+	quick_death_distance = 5
+
+[cactus]
 	start_direction = 0
+
+	[cactus.timer]
+		timer = 1
+		row_time = "60"
+
+[cane]
+	start_direction = 1
 
 	[cane.timer]
 		timer = 1
@@ -74,6 +90,9 @@
 		teleport = false
 		pitch_change = false
 		teleport_distance = 2
+
+[cocoa]
+	start_direction = 0
 
 [undefined]
 	stop_on_error = true

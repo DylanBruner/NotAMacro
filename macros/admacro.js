@@ -14,7 +14,7 @@ export default class ADMacro extends Macro {
         this.macroName = "AD";
         this.myRobot = new robot();
 
-        this.velociTimer = new VelociTimer();
+        this.velociTimer = new VelociTimer(4);
 
         this.going = null;
         this.switchAt = 0;
@@ -26,10 +26,10 @@ export default class ADMacro extends Macro {
 
     on_resume(){
         this.velociTimer.reset();
-        if (this.going == 'forward'){
-            this.forward();
-        } else if (this.going == 'backward'){
-            this.backward();
+        if (this.going == 'left'){
+            this.left();
+        } else if (this.going == 'right'){
+            this.right();
         }
     }
 

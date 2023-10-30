@@ -1,5 +1,7 @@
 export default class VelociTimer {
-  constructor() {
+  constructor(triggerTicks) {
+    this.triggerTicks = triggerTicks || 13;
+
     this.PREFIX = "§7[§cNotAMacro§7] §r";
 
     this.lastX = 0;
@@ -16,7 +18,7 @@ export default class VelociTimer {
 
   isStopped() {
     // if the last recived packet was more than two seconds ago return false
-    if (this.velociNotMovingTicks + this.tempOveride >= 13){
+    if (this.velociNotMovingTicks + this.tempOveride >= this.triggerTicks){
       if (Date.now() - this.lastPacketTime > 2000) {
         ChatLib.chat(this.PREFIX + "§cWe seem to be lagging... marking not stopped");
         return false;
