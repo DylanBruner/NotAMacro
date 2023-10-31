@@ -1,6 +1,6 @@
 
 [general]
-	selected_macro = 6
+	selected_macro = 1
 
 [warp_back]
 	server_ip = "mc.hypixel.net:25565"
@@ -74,7 +74,7 @@
 
 	[fail-safes.world_change]
 		world_change = true
-		warp_back_on_world_change = false
+		warp_back_on_world_change = true
 		warp_back_command = "/warp garden"
 
 	[fail-safes.world]

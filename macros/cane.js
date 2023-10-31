@@ -23,14 +23,12 @@ export default class Cane extends Macro {
 
     forward(){
         this.going = "forward";
-        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
         this.myRobot.keyRelease(KeyEvent.VK_S);
         this.myRobot.keyPress(KeyEvent.VK_A);
     }
 
     backward(){
         this.going = "backward";
-        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
         this.myRobot.keyRelease(KeyEvent.VK_A);
         this.myRobot.keyPress(KeyEvent.VK_S);
     }
@@ -52,6 +50,11 @@ export default class Cane extends Macro {
         } else if (this.going == 'backward'){
             this.backward();
         }
+        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
+    }
+
+    on_start(){
+        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
     }
 
     tick(){

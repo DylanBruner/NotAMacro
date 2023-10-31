@@ -9,10 +9,10 @@ import {
     @TextProperty,
     @Vigilant,
     @SliderProperty,
-    // configs
 } from '../../Vigilance/index';
 import Core from "../helpers/core";
 import Consts from "../data/shared";
+// !! [TODO] try removing the decorators and seeing if it still works
 
 // SettingsGui = Java.type('gg.essential.vigilance.gui.SettingsGui');
 
