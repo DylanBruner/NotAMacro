@@ -2,12 +2,77 @@ import Config from ".././data/Config";
 import Macro from "./macro";
 import VelociTimer from ".././helpers/velocitimer";
 
-var robot = Java.type('java.awt.Robot');
-var InputEvent = Java.type('java.awt.event.InputEvent');
-var KeyEvent = Java.type('java.awt.event.KeyEvent');
+const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+
+const robot = Java.type('java.awt.Robot');
+const InputEvent = Java.type('java.awt.event.InputEvent');
+const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 
 export default class Mushroom extends Macro {
+    static getConfig(){
+        return {
+            'MushroomStartDirection': {
+                type: PropertyType.SELECTOR,
+                default: 0,
+                config: {
+                    name: "Start Direction",
+                    options: ["Right", "Left"],
+                    category: "Mushroom"
+                }
+            },
+            'MushroomTimerMode': {
+                type: PropertyType.SELECTOR,
+                default: 1,
+                config: {
+                    name: "Timer Mode",
+                    options: ["Basic", "VelociTimer"],
+                    category: "Mushroom"
+                }
+            },
+            'MushroomRowTime': {
+                type: PropertyType.TEXT,
+                default: "60",
+                config: {
+                    name: "Row Time",
+                    category: "Mushroom",
+                    placeholder: "60"
+                }
+            },
+            'MushroomPauseOnObi': {
+                type: PropertyType.SWITCH,
+                default: true,
+                config: {
+                    name: "Enabled",
+                    description: "Pause when standing on obsidian",
+                    category: "Mushroom",
+                    subcategory: "Obsidian Pause"
+                }
+            },
+            'MushroomSwitchDirection': {
+                type: PropertyType.SWITCH,
+                default: true,
+                config: {
+                    name: "Switch Direction",
+                    description: "Switch direction when pausing on obsidian",
+                    category: "Mushroom",
+                    subcategory: "Obsidian Pause"
+                }
+            },
+            'MushroomObiPauseTime': {
+                type: PropertyType.SLIDER,
+                default: 1,
+                config: {
+                    name: "Pause Time",
+                    description: "How long to pause for",
+                    category: "Mushroom",
+                    subcategory: "Obsidian Pause",
+                    min: 1,
+                    max: 25
+                }
+            }
+        }
+    }
 
     constructor() {
         this.macroID = 0;

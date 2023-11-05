@@ -1,6 +1,8 @@
 import Config from ".././data/Config";
 import IslandForager from "../macros/islandforager";
 
+const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+
 const BlockChangePacket = Java.type("net.minecraft.network.play.server.S23PacketBlockChange");
 const AllowedBlockModifications = [
     "tile.air.name",
@@ -21,6 +23,137 @@ const PREFIX = "§7[§cNotAMacro§7] §r";
 
 
 export default class Failsafe {
+    static getConfig(){
+        return {
+            'FailSafeYawChange': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "Yaw Change",
+                    description: "Pause the macro if the yaw changes",
+                    category: "Fail-Safes",
+                    subcategory: "Movement"
+                }
+            },
+            'FailSafePitchChange': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "Pitch Change",
+                    description: "Pause the macro if the pitch changes",
+                    category: "Fail-Safes",
+                    subcategory: "Movement"
+                }
+            },
+            'FailSafePitchYawChangeAmount': {
+                type: PropertyType.SLIDER,
+                default: 1,
+                config: {
+                    name: "Pitch/Yaw Change Amount",
+                    description: "The amount of change allowed for pitch and yaw (devides by 10, 1 = 0.1)",
+                    category: "Fail-Safes",
+                    subcategory: "Movement",
+                    min: 1,
+                    max: 10
+                }
+            },
+            'FailSafeTeleport': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "Teleport",
+                    description: "Pause the macro if the player teleports",
+                    category: "Fail-Safes",
+                    subcategory: "Movement"
+                }
+            },
+            'FailSafeTeleportDistance': {
+                type: PropertyType.SLIDER,
+                default: 2,
+                config: {
+                    name: "Teleport Distance",
+                    description: "The distance to check for teleports",
+                    category: "Fail-Safes",
+                    subcategory: "Movement",
+                    min: 1,
+                    max: 100
+                }
+            },
+            'FailSafeWorldChange': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "World Change",
+                    description: "Pause the macro if the world changes",
+                    category: "Fail-Safes",
+                    subcategory: "World Change"
+                }
+            },
+            'FailSafeWorldChangeWarpBack': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "Warp Back on World Change",
+                    description: "Run the warp back command when the world changes",
+                    category: "Fail-Safes",
+                    subcategory: "World Change"
+                }
+            },
+            'FailSafeWorldChangeWarpBackCommand': {
+                type: PropertyType.TEXT,
+                default: "/warp garden",
+                config: {
+                    name: "Warp Back Command",
+                    description: "The command to run when the world changes",
+                    category: "Fail-Safes",
+                    subcategory: "World Change"
+                }
+            },
+            'FailSafeBlockChange': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "Block Change",
+                    description: "Pause the macro if a block changes (excluding crops)",
+                    category: "Fail-Safes",
+                    subcategory: "Block Change"
+                }
+            },
+            'FailSafePlayerDetection': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "Player Detection",
+                    description: "Pause the macro if a player is detected",
+                    category: "Fail-Safes",
+                    subcategory: "Player Detection"
+                }
+            },
+            'FailSafePlayerDetectionRange': {
+                type: PropertyType.SLIDER,
+                default: 10,
+                config: {
+                    name: "Player Detection Range",
+                    description: "The range to check for players",
+                    category: "Fail-Safes",
+                    subcategory: "Player Detection",
+                    min: 1,
+                    max: 100
+                }
+            },
+            'FailSafeSlotChange': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "Slot Change",
+                    description: "Pause the macro if the slot changes",
+                    category: "Fail-Safes",
+                    subcategory: "Slot Change"
+                }
+            },
+        }
+    }
+
     constructor(){
         this.running = false;
         this.forceRestart = false;

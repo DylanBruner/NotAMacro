@@ -2,11 +2,46 @@ import Config from ".././data/Config";
 import Macro from "./macro";
 import VelociTimer from ".././helpers/velocitimer";
 
-var robot = Java.type('java.awt.Robot');
-var InputEvent = Java.type('java.awt.event.InputEvent');
-var KeyEvent = Java.type('java.awt.event.KeyEvent');
+const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+
+const robot = Java.type('java.awt.Robot');
+const InputEvent = Java.type('java.awt.event.InputEvent');
+const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class Cane extends Macro {
+    static getConfig(){
+        return {
+            'CaneTimerMode': {
+                type: PropertyType.SELECTOR,
+                default: "0",
+                config: {
+                    name: "Timer Mode",
+                    category: "Cane",
+                    options: ["Basic", "VelociTimer"]
+                }
+            },
+            'CaneRowTime': {
+                type: PropertyType.TEXT,
+                default: "60",
+                config: {
+                    name: "Row Time",
+                    description: "How long to farm each row (basic timer)",
+                    category: "Cane",
+                    placeholder: "60"
+                }
+            },
+            'CaneStartDirection': {
+                type: PropertyType.SELECTOR,
+                default: "0",
+                config: {
+                    name: "Start Direction",
+                    category: "Cane",
+                    options: ["Forward", "Backward"]
+                }
+            }
+        };
+    }
+
     constructor(){
         super();
 

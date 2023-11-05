@@ -32,7 +32,20 @@ const macros = [
     Mushroom, Cane, ADMacro, IslandForager, 
     WarpBack, CactusMacro, CocoaMacro, PumpkinMelonMacro,
     FishingHelper
-]
+];
+
+for (macro of macros){
+    if (macro.getConfig != undefined){
+        Config.registerTemplate(macro.getConfig());
+    }
+}
+// }
+// for (const key of Object.keys(Failsafe.getConfig())){
+//     ChatLib.chat(key);
+// }
+Config.registerTemplate(Failsafe.getConfig());
+
+Config.init();
 
 // overide Config.reloadMacros
 Config.reloadMacros = () => {

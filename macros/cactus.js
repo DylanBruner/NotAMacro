@@ -2,11 +2,27 @@ import Config from ".././data/Config";
 import Macro from "./macro";
 import VelociTimer from ".././helpers/velocitimer";
 
-var robot = Java.type('java.awt.Robot');
-var InputEvent = Java.type('java.awt.event.InputEvent');
-var KeyEvent = Java.type('java.awt.event.KeyEvent');
+const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+
+const robot = Java.type('java.awt.Robot');
+const InputEvent = Java.type('java.awt.event.InputEvent');
+const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class CactusMacro extends Macro {
+    static getConfig(){
+        return {
+            'CactusStartDirection': {
+                type: PropertyType.SELECTOR,
+                default: 0,
+                config: {
+                    name: "Start Direction",
+                    category: "Cactus",
+                    options: ["Right", "Left"]
+                }
+            }
+        }
+    }
+
     constructor() {
         this.macroID = 5;
         this.macroName = "Cactus";
@@ -54,10 +70,10 @@ export default class CactusMacro extends Macro {
         if (this.going == null){
             // press left click
             this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
-            if (Config.CocoaStartDirection == 0){
+            if (Config.CactusStartDirection == 0){
                 this.going = 'A';
                 this.myRobot.keyPress(KeyEvent.VK_A);
-            } else if (Config.CocoaStartDirection == 1){
+            } else if (Config.CactusStartDirection == 1){
                 this.going = 'D';
                 this.myRobot.keyPress(KeyEvent.VK_D);
             }
