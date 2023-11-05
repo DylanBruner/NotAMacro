@@ -1,17 +1,12 @@
 
 [general]
-	selected_macro = 1
+	selected_macro = 0
 
 [warp_back]
 	server_ip = "mc.hypixel.net:25565"
 	warp_back_commands = "skyblock, warp garden"
 
 [island_forager]
-	debug_mode = false
-	sapling_slot = 1
-	bone_meal_slot = 2
-	axe_slot = 3
-	verbose_mode = false
 	single_mode = false
 
 	[island_forager.debug]
@@ -20,31 +15,27 @@
 
 	[island_forager.inventory]
 		sapling_slot = 5
-		bone_meal_slot = 3
+		bone_meal_slot = 4
 		axe_slot = 1
 
 	[island_forager.movement]
-		"move-limit_(speed_basically)" = 3
+		"move-limit_(speed_basically)" = 2
 
 	[island_forager.fail-safes]
 		stop_on_error = true
-		stop_on_empty_hand = true
 		"disable_normal_fail-safes_(except_world_change)" = true
+		stop_on_empty_hand = true
 		"stop_on_yaw/pitch_change" = true
 
 [general_macro_config]
-	quick_death = true
-	quick_death_distance = 5
+	quick_death = false
+	quick_death_distance = 3
 
 ["pumpkin/melon"]
 	start_direction = 0
 
 [cactus]
 	start_direction = 0
-
-	[cactus.timer]
-		timer = 1
-		row_time = "60"
 
 [cane]
 	start_direction = 1
@@ -66,7 +57,7 @@
 	row_time = "60"
 
 	[mushroom.obsidan_pause]
-		obi_pause_time = 12
+		obi_pause_time = 10
 		pause_on_obi = true
 		switch_direction = true
 
@@ -74,7 +65,7 @@
 
 	[fail-safes.world_change]
 		world_change = true
-		warp_back_on_world_change = true
+		warp_back_on_world_change = false
 		warp_back_command = "/warp garden"
 
 	[fail-safes.world]
@@ -85,19 +76,15 @@
 		range = 10
 
 	[fail-safes.inventory]
-		slot_change = false
+		slot_change = true
 
 	[fail-safes.movement]
 		change_amount = 1
-		yaw_change = false
+		yaw_change = true
 		teleport = false
-		pitch_change = false
+		pitch_change = true
 		teleport_distance = 2
 
 [cocoa]
 	start_direction = 0
-
-[undefined]
-	stop_on_error = true
-	"stop_on_yaw/pitch_change" = true
 

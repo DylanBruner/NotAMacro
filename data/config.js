@@ -12,7 +12,6 @@ import {
 } from '../../Vigilance/index';
 import Core from "../helpers/core";
 import Consts from "../data/shared";
-// !! [TODO] try removing the decorators and seeing if it still works
 
 // SettingsGui = Java.type('gg.essential.vigilance.gui.SettingsGui');
 
@@ -43,7 +42,7 @@ class Config {
     @SelectorProperty({
         name: "Selected Macro",
         category: "General",
-        options: ["Mushroom", "Cane", "AD Macro", "Island Forager", "Warp Back", "Cactus", "Cocoa", "Pumpkin/Melon"],
+        options: ["Mushroom", "Cane", "AD Macro", "Island Forager", "Warp Back", "Cactus", "Cocoa", "Pumpkin/Melon", "Fishing Helper"],
     })
     SelectedMacro = 0;
 

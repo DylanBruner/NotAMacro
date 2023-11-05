@@ -1,4 +1,5 @@
 import Config from ".././data/Config";
+import Safety from "../helpers/safety";
 import Macro from "./macro";
 
 var robot = Java.type("java.awt.Robot");
@@ -23,9 +24,9 @@ debug = (msg) => {
 };
 
 export default class IslandForager extends Macro {
-  constructor(failsafe) {
+  constructor(scope) {
     super();
-    this.failsafe = failsafe;
+    this.failsafe = scope.failsafe;
     this.macroID = 3;
     this.macroName = "Island Forager";
 
@@ -214,7 +215,10 @@ export default class IslandForager extends Macro {
 
   setSlot(slot) {
     if (Player.getHeldItemIndex() != slot) {
-      Client.getMinecraft().field_71439_g.field_71071_by.field_70461_c = slot;
+      if (!Safety.setSlot(slot)) {
+        this.tripped = true;
+        this.reason = "Slot out of bounds: " + slot;
+      }
     }
   }
 
@@ -497,6 +501,7 @@ export default class IslandForager extends Macro {
           this.gotoPY(this.points[this.step][0], this.points[this.step][1]);
           this.step++;
           this.stage = STAGE_WAITING_FOR_PLACE;
+          this.globalcooldown = 1;
         }
         debug("§3Planting saplings");
       } else if (this.stage == STAGE_BONEMEAL) {

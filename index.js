@@ -6,6 +6,7 @@ import ADMacro from "./macros/admacro";
 import CactusMacro from "./macros/cactus";
 import Cane from "./macros/cane";
 import CocoaMacro from "./macros/cocoamacro";
+import FishingHelper from "./macros/fishinghelper";
 import IslandForager from "./macros/islandforager";
 import Mushroom from "./macros/mushroom";
 import PumpkinMelonMacro from "./macros/pumpkinmelon";
@@ -29,7 +30,8 @@ const scope = new Scope();
 const generalUtils = new GeneralUtils();
 const macros = [
     Mushroom, Cane, ADMacro, IslandForager, 
-    WarpBack, CactusMacro, CocoaMacro, PumpkinMelonMacro
+    WarpBack, CactusMacro, CocoaMacro, PumpkinMelonMacro,
+    FishingHelper
 ]
 
 // overide Config.reloadMacros
@@ -97,7 +99,7 @@ register("tick", () => {
                 scope.macroEnabled = false;
                 return;
             } else {
-                scope.macro = new macros[Config.SelectedMacro]();
+                scope.macro = new macros[Config.SelectedMacro](scope);
             }
 
             ChatLib.chat(PREFIX + "§aStarting §e" + scope.macro.macroName + "§a macro!");
