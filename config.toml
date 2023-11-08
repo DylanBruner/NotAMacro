@@ -2,9 +2,49 @@
 [general]
 	selected_macro = 5
 
+[island_forager]
+	"move_limit_(speed_basically)" = 3
+	debug_mode = false
+	disable_normal_failsafes = false
+	axe_slot = 3
+	stop_on_empty_hand = true
+	"stop_on_yaw/pitch_change" = true
+	sapling_slot = 1
+	bonemeal_slot = 2
+	stop_on_error = true
+	verbose_mode = false
+	single_mode = false
+
+	[island_forager.debug]
+		debug_mode = false
+		verbose_mode = false
+
+	[island_forager.inventory]
+		sapling_slot = 1
+		bonemeal_slot = 2
+		axe_slot = 3
+
+	[island_forager.fail-safes]
+		disable_normal_failsafes = false
+		stop_on_error = true
+		stop_on_empty_hand = true
+		"stop_on_yaw/pitch_change" = true
+
 [general_macro_config]
 	quick_death = true
 	quick_death_distance = 5
+
+	[general_macro_config.farming]
+		quick_death = true
+		quick_death_distance = 5
+
+[ad]
+	start_direction = 0
+	timer_mode = 1
+	row_time = "60"
+
+["pumpkin/melon"]
+	start_direction = 0
 
 [cactus]
 	start_direction = 0
@@ -20,9 +60,14 @@
 	row_time = "60"
 
 	[mushroom.obsidian_pause]
-		pause_time = 1
+		pause_time = 13
 		switch_direction = true
 		enabled = true
+
+["a/d_macro"]
+	start_direction = 0
+	timer_mode = 1
+	row_time = "60"
 
 [fail-safes]
 
@@ -47,4 +92,7 @@
 		pitch_change = false
 		"pitch/yaw_change_amount" = 1
 		teleport_distance = 2
+
+[cocoa]
+	start_direction = 0
 

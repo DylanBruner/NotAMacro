@@ -2,11 +2,27 @@ import Config from ".././data/Config";
 import Macro from "./macro";
 import VelociTimer from ".././helpers/velocitimer";
 
-var robot = Java.type('java.awt.Robot');
-var InputEvent = Java.type('java.awt.event.InputEvent');
-var KeyEvent = Java.type('java.awt.event.KeyEvent');
+const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+
+const robot = Java.type('java.awt.Robot');
+const InputEvent = Java.type('java.awt.event.InputEvent');
+const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class PumpkinMelonMacro extends Macro {
+    static getConfig() {
+        return {
+            PumpkinMelonStartDirection: {
+                type: PropertyType.SELECTOR,
+                default: "0",
+                config: {
+                    name: "Start Direction",
+                    category: "Pumpkin/Melon",
+                    options: ["Forward", "Backward"]
+                }
+            }
+        };
+    }
+
     constructor() {
         this.macroID = 7;
         this.macroName = "PumpkinMelon";

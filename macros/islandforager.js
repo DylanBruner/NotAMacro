@@ -1,10 +1,13 @@
 import Config from ".././data/Config";
 import Safety from "../helpers/safety";
 import Macro from "./macro";
+import Consts from "../data/shared";
 
-var robot = Java.type("java.awt.Robot");
-var InputEvent = Java.type("java.awt.event.InputEvent");
-var KeyEvent = Java.type("java.awt.event.KeyEvent");
+const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+
+const robot = Java.type("java.awt.Robot");
+const InputEvent = Java.type("java.awt.event.InputEvent");
+const KeyEvent = Java.type("java.awt.event.KeyEvent");
 
 const NAM_PREFIX = "§7[§cNotAMacro§7] §r";
 const ERROR_PREFIX = "§c[ERROR!] §r";
@@ -24,6 +27,134 @@ debug = (msg) => {
 };
 
 export default class IslandForager extends Macro {
+  static getConfig() {
+    let config = {
+      IslandForagerSingleMode: {
+        type: PropertyType.SWITCH,
+        default: false,
+        config: {
+          name: "Single Mode",
+          description: "Farms a single tree",
+          category: "Island Forager",
+        },
+      },
+      IslandForagerSaplingSlot: {
+        type: PropertyType.SLIDER,
+        default: 1,
+        config: {
+          name: "Sapling Slot",
+          description: "The slot that has saplings",
+          category: "Island Forager",
+          subcategory: "Inventory",
+          min: 1,
+          max: 9,
+        },
+      },
+      IslandForagerBoneMealSlot: {
+        type: PropertyType.SLIDER,
+        default: 2,
+        config: {
+          name: "Bonemeal Slot",
+          description: "The slot that has bonemeal",
+          category: "Island Forager",
+          subcategory: "Inventory",
+          min: 1,
+          max: 9,
+        },
+      },
+      IslandForagerAxeSlot: {
+        type: PropertyType.SLIDER,
+        default: 3,
+        config: {
+          name: "Axe Slot",
+          description: "The slot that has an axe",
+          category: "Island Forager",
+          subcategory: "Inventory",
+          min: 1,
+          max: 9,
+        },
+      },
+      IslandForagerMoveLimit: {
+        type: PropertyType.SLIDER,
+        default: 3,
+        config: {
+          name: "Move Limit (Speed Basically)",
+          description: "Caps the max movement/tick. &cYou probably shouldn't touch this. &eI warned ya!",
+          category: "Island Forager",
+          min: 0,
+          max: 10,
+        },
+      },
+      IslandForagerDisableNormalFailsafes: {
+        type: PropertyType.SWITCH,
+        default: false,
+        config: {
+          name: "Disable Normal Failsafes",
+          description: "So you dont need to re-setup your failsafes when switching to another macro",
+          category: "Island Forager",
+          subcategory: "Fail-Safes",
+        },
+      },
+      IslandForagerStopOnEmptyHand: {
+        type: PropertyType.SWITCH,
+        default: true,
+        config: {
+          name: "Stop On Empty Hand",
+          description: "Stops the macro when you have an empty hand",
+          category: "Island Forager",
+          subcategory: "Fail-Safes",
+        },
+      },
+      IslandForagerStopOnYawPitchChange: {
+        type: PropertyType.SWITCH,
+        default: true,
+        config: {
+          name: "Stop On Yaw/Pitch Change",
+          description: "Stops the macro when you look around",
+          category: "Island Forager",
+          subcategory: "Fail-Safes",
+        },
+      },
+      IslandForagerStopOnError: {
+        type: PropertyType.SWITCH,
+        default: true,
+        config: {
+          name: "Stop On Error",
+          description: "Stops the macro if a an attempt is made to send a invalid packet (even if this is off the packet wont be sent)",
+          category: "Island Forager",
+          subcategory: "Fail-Safes",
+        },
+      },
+      IslandForagerDebugMode: {
+        type: PropertyType.SWITCH,
+        default: false,
+        config: {
+          name: "Debug Mode",
+          description: "Prints debug messages",
+          category: "Island Forager",
+          subcategory: "Debug",
+        },
+      },
+      IslandForagerVerboseMode: {
+        type: PropertyType.SWITCH,
+        default: false,
+        config: {
+          name: "Verbose Mode",
+          description: "Prints too many debug messages",
+          category: "Island Forager",
+          subcategory: "Debug",
+        },
+      }
+    }
+
+    if (!Consts.debug) {
+      delete config.IslandForagerDebugMode;
+      delete config.IslandForagerVerboseMode;
+    }
+
+    return config;
+  }
+
   constructor(scope) {
     super();
     this.failsafe = scope.failsafe;

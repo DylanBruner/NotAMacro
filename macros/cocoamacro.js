@@ -3,11 +3,27 @@ import Config from "../data/Config";
 import Macro from "./macro";
 import VelociTimer from "../helpers/velocitimer";
 
-var robot = Java.type('java.awt.Robot');
-var InputEvent = Java.type('java.awt.event.InputEvent');
-var KeyEvent = Java.type('java.awt.event.KeyEvent');
+const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+
+const robot = Java.type('java.awt.Robot');
+const InputEvent = Java.type('java.awt.event.InputEvent');
+const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class CocoaMacro extends Macro {
+    static getConfig() {
+        return {
+            CocoaStartDirection: {
+                type: PropertyType.SELECTOR,
+                default: "0",
+                config: {
+                    name: "Start Direction",
+                    category: "Cocoa",
+                    options: ["Forward", "Backward"]
+                }
+            }
+        };
+    }
+
     constructor() {
         this.macroID = 6;
         this.macroName = "Cocoa";

@@ -11,16 +11,16 @@ const KeyEvent = Java.type('java.awt.event.KeyEvent');
 export default class Cane extends Macro {
     static getConfig(){
         return {
-            'CaneTimerMode': {
+            CaneTimerMode: {
                 type: PropertyType.SELECTOR,
-                default: "0",
+                default: "1",
                 config: {
                     name: "Timer Mode",
                     category: "Cane",
                     options: ["Basic", "VelociTimer"]
                 }
             },
-            'CaneRowTime': {
+            CaneRowTime: {
                 type: PropertyType.TEXT,
                 default: "60",
                 config: {
@@ -30,7 +30,7 @@ export default class Cane extends Macro {
                     placeholder: "60"
                 }
             },
-            'CaneStartDirection': {
+            CaneStartDirection: {
                 type: PropertyType.SELECTOR,
                 default: "0",
                 config: {

@@ -2,11 +2,46 @@ import Macro from "./macro";
 import Config from ".././data/Config";
 import VelociTimer from ".././helpers/velocitimer";
 
-var robot = Java.type('java.awt.Robot');
-var InputEvent = Java.type('java.awt.event.InputEvent');
-var KeyEvent = Java.type('java.awt.event.KeyEvent');
+const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+
+const robot = Java.type('java.awt.Robot');
+const InputEvent = Java.type('java.awt.event.InputEvent');
+const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class ADMacro extends Macro {
+    static getConfig(){
+        return {
+            ADStartDirection: {
+                type: PropertyType.SELECTOR,
+                default: "0",
+                config: {
+                    name: "Start Direction",
+                    category: "A/D Macro",
+                    options: ["Left", "Right"]
+                }
+            },
+            ADTimerMode: {
+                type: PropertyType.SELECTOR,
+                default: "1",
+                config: {
+                    name: "Timer Mode",
+                    category: "A/D Macro",
+                    options: ["Basic", "VelociTimer"]
+                }
+            },
+            ADRowTime: {
+                type: PropertyType.TEXT,
+                default: "60",
+                config: {
+                    name: "Row Time",
+                    description: "How long to farm each row (basic timer)",
+                    category: "A/D Macro",
+                    placeholder: "60"
+                }
+            }
+        };
+    }
+
     constructor(){
         super();
 

@@ -65,6 +65,7 @@ class Config {
         name: "Quick Death",
         description: "Detects void drops and runs /warp garden",
         category: "General Macro Config",
+        subcategory: "Farming"
     })
     GeneralMacroConfigQuickDeath = true;
 
@@ -72,6 +73,7 @@ class Config {
         name: "Quick Death Distance",
         description: "The distance to check for void drops",
         category: "General Macro Config",
+        subcategory: "Farming",
         min: 1,
         max: 10
     })

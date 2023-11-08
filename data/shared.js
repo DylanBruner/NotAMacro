@@ -1,4 +1,5 @@
 export default class Consts {
     // version variable
-    static version = '1.3.3';
+    static version = '1.3.4';
+    static debug = true;
 }
