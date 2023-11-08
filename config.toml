@@ -1,6 +1,6 @@
 
 [general]
-	selected_macro = 5
+	selected_macro = 2
 
 [island_forager]
 	"move_limit_(speed_basically)" = 3

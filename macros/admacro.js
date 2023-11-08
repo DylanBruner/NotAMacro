@@ -1,4 +1,4 @@
-import Macro from "./macro";
+import Macro from "../macros/macro";
 import Config from ".././data/Config";
 import VelociTimer from ".././helpers/velocitimer";
 
@@ -8,7 +8,7 @@ const robot = Java.type('java.awt.Robot');
 const InputEvent = Java.type('java.awt.event.InputEvent');
 const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
-export default class ADMacro extends Macro {
+__LOADER_POINTER = class ADMacro extends Macro {
     static getConfig(){
         return {
             ADStartDirection: {
@@ -46,7 +46,7 @@ export default class ADMacro extends Macro {
         super();
 
         this.macroID = 2;
-        this.macroName = "AD";
+        this.macroName = "A/D";
         this.myRobot = new robot();
 
         this.velociTimer = new VelociTimer(4);

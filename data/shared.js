@@ -1,5 +1,8 @@
-export default class Consts {
-    // version variable
-    static version = '1.3.4';
-    static debug = true;
-}
+export default new (class Consts {
+    constructor() {
+        const data = JSON.parse(FileLib.read(`${Config.modulesFolder}/NotAMacro/metadata.json`));
+        
+        this.version = data.version;
+        this.debug   = true;
+    }
+})();

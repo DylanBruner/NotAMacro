@@ -16,12 +16,13 @@ import Consts from "../data/shared";
 
 @Vigilant("NotAMacro", "§5NotAMacro §zv" + Consts.version, {
     getCategoryComparator: () => (a, b) => {
-        Core.init(this);
+        l = ["General", "General Macro Config", "Fail-Safes", "Cane", "Mushroom", "Cactus", "Cocoa", "Pumpkin/Melon", "A/D Macro", "Island Forager", "Warp Back"];
         return l.indexOf(a.name) - l.indexOf(b.name);
     }
 })
 class Config {
     constructor() {
+        Core.init(this);
         this.registerProperty.bind(this);
         this.registerTemplate.bind(this);
     }

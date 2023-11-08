@@ -1,8 +1,8 @@
-import Config from "./data/Config";
+
+import Cfg from "./data/Config";
 import Failsafe from "./helpers/failsafe";
 import GeneralUtils from "./helpers/generalutils";
 import Safety from "./helpers/safety";
-import ADMacro from "./macros/admacro";
 import CactusMacro from "./macros/cactus";
 import Cane from "./macros/cane";
 import CocoaMacro from "./macros/cocoamacro";
@@ -11,6 +11,7 @@ import IslandForager from "./macros/islandforager";
 import Mushroom from "./macros/mushroom";
 import PumpkinMelonMacro from "./macros/pumpkinmelon";
 import WarpBack from "./macros/warpback";
+import Core from "./helpers/core";
 
 const pauseKey = new KeyBind("Toggle Key", Keyboard.KEY_SEMICOLON, "NotAMacro")
 
@@ -26,6 +27,8 @@ class Scope {
     }
 }
 
+// Core.loadMacroFromString(FileLib.read(`${Config.modulesFolder}/NotAMacro/macros/admacro.js`))
+
 const scope = new Scope();
 const generalUtils = new GeneralUtils();
 const macros = [
@@ -36,19 +39,16 @@ const macros = [
 
 for (macro of macros){
     if (macro.getConfig != undefined){
-        Config.registerTemplate(macro.getConfig());
+        Cfg.registerTemplate(macro.getConfig());
     }
 }
-// }
-// for (const key of Object.keys(Failsafe.getConfig())){
-//     ChatLib.chat(key);
-// }
-Config.registerTemplate(Failsafe.getConfig());
 
-Config.init();
+Cfg.registerTemplate(Failsafe.getConfig());
+
+Cfg.init();
 
 // overide Config.reloadMacros
-Config.reloadMacros = () => {
+Cfg.reloadMacros = () => {
     scope.macroEnabled = false;
     scope.macro = null;
     ChatLib.chat(PREFIX + "§aReloaded macros!");
@@ -71,7 +71,7 @@ register("command", () => {
         scope.failsafe.on_pause();
         ChatLib.chat(PREFIX + "§cPaused!");
     }
-    Config.openGUI();
+    Cfg.openGUI();
 }).setName("nam")
 
 register("guiOpened", () => {
@@ -100,19 +100,19 @@ register("tick", () => {
         scope.failsafe.on_resume();
     }
 
-    if (scope.macro != null && scope.macro.macroID != Config.SelectedMacro){
+    if (scope.macro != null && scope.macro.macroID != Cfg.SelectedMacro){
         scope.macro.on_pause(); // Only really needed for WarpBack but ig all of them can use this
         scope.macro = null;
         scope.macroEnabled = false;
     } else if (scope.macro == null && pauseKey.isPressed()){
         scope.macroEnabled = !scope.macroEnabled;
         if (scope.macroEnabled){
-            if (Config.SelectedMacro > macros.length - 1){
+            if (Cfg.SelectedMacro > macros.length - 1){
                 ChatLib.chat(PREFIX + "§cThat's weird....");
                 scope.macroEnabled = false;
                 return;
             } else {
-                scope.macro = new macros[Config.SelectedMacro](scope);
+                scope.macro = new macros[Cfg.SelectedMacro](scope);
             }
 
             ChatLib.chat(PREFIX + "§aStarting §e" + scope.macro.macroName + "§a macro!");

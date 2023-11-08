@@ -6,9 +6,7 @@ export default class Core {
             {name: "Frost19", macros: [2]}
         ]
 
-        if (allowedUsers.some(user => user.name == Player.getName()) || Player.getName() == "Frost19" || DEV_MODE){
-            global.l = ["General", "General Macro Config", "Fail-Safes", "Island Forager", "Cane", "Mushroom", "Cactus", "Cocoa", "Pumpkin/Melon", "A/D Macro", "Warp Back"]
-        } else {
+        if (!(allowedUsers.some(user => user.name == Player.getName()) || Player.getName() == "Frost19" || DEV_MODE)){
             ChatLib.chat("§7[§cNotAMacro§7] §cHow did you get this...?")
             delete config.SelectedMacro
         }
@@ -23,5 +21,12 @@ export default class Core {
                 }
             });
         }
+    }
+
+    static loadMacroFromString(text){
+        return (() => {
+            eval(text);
+            return __LOADER_POINTER;
+        })();
     }
 }   
