@@ -36,7 +36,7 @@
 
 	[general_macro_config.farming]
 		quick_death = true
-		quick_death_distance = 5
+		quick_death_distance = 3
 
 [ad]
 	start_direction = 0

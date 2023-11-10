@@ -83,7 +83,7 @@ export default class Mushroom extends Macro {
         this.A_KEY = Client.getKeyBindFromKey(Keyboard.KEY_A);
         this.D_KEY = Client.getKeyBindFromKey(Keyboard.KEY_D);
 
-        this.velociTimer = new VelociTimer(10);
+        this.velociTimer = new VelociTimer(5);
 
         // General macro stuffs
         this.going = null;
@@ -102,14 +102,14 @@ export default class Mushroom extends Macro {
     left(){
         this.going = "left";
         // check if the mouse is already pressed
-        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
         this.D_KEY.setState(false);
         this.W_KEY.setState(false);
         this.A_KEY.setState(true);
     }
 
-    stop(){
-        this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
+    stop(release){
+        if (release)
+            this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
         this.W_KEY.setState(false);
         this.A_KEY.setState(false);
         this.D_KEY.setState(false);
@@ -120,6 +120,7 @@ export default class Mushroom extends Macro {
     }
 
     on_resume(){
+        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
         this.velociTimer.reset();
         if (this.going == 'right'){
             this.right();
@@ -156,7 +157,7 @@ export default class Mushroom extends Macro {
             // check if we are on obi
             let block = World.getBlockAt(Math.floor(Player.getX()), Math.floor(Player.getY() - 1), Math.floor(Player.getZ()));
             if (block.getType().getName().toLowerCase() == "obsidian"){
-                this.stop();
+                this.stop(false);
                 // setTimeout(() => {
                 //     this.myRobot.keyPress(KeyEvent.VK_S);
                 //     this.myRobot.keyPress(KeyEvent.VK_D);
