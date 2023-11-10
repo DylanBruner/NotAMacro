@@ -93,7 +93,6 @@ export default class Mushroom extends Macro {
 
     right(){
         this.going = "right";
-        // this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
         this.A_KEY.setState(false);
         this.W_KEY.setState(true);
         this.D_KEY.setState(true);
@@ -101,7 +100,6 @@ export default class Mushroom extends Macro {
 
     left(){
         this.going = "left";
-        // check if the mouse is already pressed
         this.D_KEY.setState(false);
         this.W_KEY.setState(false);
         this.A_KEY.setState(true);
@@ -154,18 +152,12 @@ export default class Mushroom extends Macro {
         }
 
         if (Config.MushroomPauseOnObi){
-            // check if we are on obi
             let block = World.getBlockAt(Math.floor(Player.getX()), Math.floor(Player.getY() - 1), Math.floor(Player.getZ()));
             if (block.getType().getName().toLowerCase() == "obsidian"){
                 this.stop(false);
-                // setTimeout(() => {
-                //     this.myRobot.keyPress(KeyEvent.VK_S);
-                //     this.myRobot.keyPress(KeyEvent.VK_D);
                 if (Config.MushroomSwitchDirection){
-                    this.going = 'left' ? 'right' : 'left'; // switch direction
+                    this.going = (this.going == 'left') ? 'right' : 'left';
                 }
-                //     this.resumeAt = Date.now() + 700;
-                // }, 1000);
 
                 this.resumeAt = Config.MushroomObiPauseTime * 1000 + Date.now();
                 this.internalPause = true;
@@ -181,8 +173,6 @@ export default class Mushroom extends Macro {
                     this.left();
                 } else if (this.going == "left"){
                     this.right();
-                } else {
-                    ChatLib.chat(PREFIX + "§cError: §eGoing is null!");
                 }
             }
         } else {
@@ -191,8 +181,6 @@ export default class Mushroom extends Macro {
                     this.left();
                 } else if (this.going == "left"){
                     this.right();
-                } else {
-                    ChatLib.chat(PREFIX + "§cError: §eGoing is null!");
                 }
                 this.switchAt = Date.now() + Config.MushroomRowTime * 1000;
             }

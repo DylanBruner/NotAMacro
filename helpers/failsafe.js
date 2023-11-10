@@ -17,14 +17,33 @@ const AllowedBlockModifications = [
     "cactus"
 ]
 
-
 const PREFIX = "§7[§cNotAMacro§7] §r";
 
 
 export default class Failsafe {
     static getConfig(){
         return {
-            'FailSafeYawChange': {
+            'FailSafeRandDelayMin': {
+                type: PropertyType.SLIDER,
+                default: 1,
+                config: {
+                    name: "Random Delay Minimum",
+                    category: "Fail-Safes",
+                    subcategory: "Random Delay",
+                    min: 1,
+                    max: 100
+                }
+            }, 'FailSafeRandDelayMax': {
+                type: PropertyType.SLIDER,
+                default: 1,
+                config: {
+                    name: "Random Delay Maximum",
+                    category: "Fail-Safes",
+                    subcategory: "Random Delay",
+                    min: 1,
+                    max: 100
+                }
+            }, 'FailSafeYawChange': {
                 type: PropertyType.SWITCH,
                 default: false,
                 config: {
