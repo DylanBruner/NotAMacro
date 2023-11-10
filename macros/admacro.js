@@ -8,7 +8,7 @@ const robot = Java.type('java.awt.Robot');
 const InputEvent = Java.type('java.awt.event.InputEvent');
 const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
-__LOADER_POINTER = class ADMacro extends Macro {
+export default class ADMacro extends Macro {
     static getConfig(){
         return {
             ADStartDirection: {

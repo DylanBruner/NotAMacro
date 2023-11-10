@@ -9,6 +9,7 @@ import CocoaMacro from "./macros/cocoamacro";
 import FishingHelper from "./macros/fishinghelper";
 import IslandForager from "./macros/islandforager";
 import Mushroom from "./macros/mushroom";
+import ADMacro from "./macros/admacro";
 import PumpkinMelonMacro from "./macros/pumpkinmelon";
 import WarpBack from "./macros/warpback";
 import Core from "./helpers/core";

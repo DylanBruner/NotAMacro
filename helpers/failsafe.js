@@ -1,5 +1,4 @@
 import Config from ".././data/Config";
-import IslandForager from "../macros/islandforager";
 
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
 
@@ -178,7 +177,7 @@ export default class Failsafe {
     // Internal callbacks and stuff
     onBlockModified(packet){
         if (!Config.FailSafeBlockChange) return;
-        if (Config.IslandForagerDisableNormalFailSafes && Config.SelectedMacro == IslandForager.get_id()) return;
+        if (Config.IslandForagerDisableNormalFailSafes && Config.SelectedMacro == 3) return;
         
         x = packet.func_179827_b().func_177958_n();
         y = packet.func_179827_b().func_177956_o();

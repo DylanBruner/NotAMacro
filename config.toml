@@ -1,6 +1,6 @@
 
 [general]
-	selected_macro = 2
+	selected_macro = 0
 
 [island_forager]
 	"move_limit_(speed_basically)" = 3
@@ -72,7 +72,7 @@
 [fail-safes]
 
 	[fail-safes.world_change]
-		world_change = false
+		world_change = true
 		warp_back_on_world_change = false
 		warp_back_command = "/warp garden"
 
@@ -80,16 +80,16 @@
 		block_change = false
 
 	[fail-safes.slot_change]
-		slot_change = false
+		slot_change = true
 
 	[fail-safes.player_detection]
 		player_detection = false
 		player_detection_range = 10
 
 	[fail-safes.movement]
-		yaw_change = false
+		yaw_change = true
 		teleport = false
-		pitch_change = false
+		pitch_change = true
 		"pitch/yaw_change_amount" = 1
 		teleport_distance = 2
 

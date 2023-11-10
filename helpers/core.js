@@ -1,6 +1,29 @@
+import request from "requestV2";
+import { Promise } from '../../PromiseV2';
+
 const DEV_MODE = true;
 
 export default class Core {
+    static _internals = {
+        _interval_ids: []
+    }
+
+    static setup(){
+        register('tick', () => {
+            this._internals._interval_ids.forEach((interval) => {
+                if (interval == null) return;
+                if (interval.last + interval.delay <= Date.now()){
+                    interval.last = Date.now();
+                    try {
+                        interval.callback();
+                    } catch (e){
+                        console.error(e);
+                    }
+                }
+            });
+        })
+    }
+
     static init(config){
         const allowedUsers = [
             {name: "Frost19", macros: [2]}
@@ -23,10 +46,26 @@ export default class Core {
         }
     }
 
+    static setInterval(callback, delay){
+        return this._internals._interval_ids.push({
+            callback: callback,
+            delay: delay,
+            last: 0
+        }) - 1;
+    }
+
+    static clearInterval(id){
+        this._internals._interval_ids[id] = null;
+    }
+
     static loadMacroFromString(text){
         return (() => {
             eval(text);
             return __LOADER_POINTER;
         })();
     }
-}   
+
+    static loadMacroFromUrl(url){
+        return this.loadMacroFromString(FileLib.getUrlContent(url));
+    }
+}

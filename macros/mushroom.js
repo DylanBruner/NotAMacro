@@ -79,7 +79,11 @@ export default class Mushroom extends Macro {
         this.macroName = "Mushroom";
         this.myRobot = new robot();
 
-        this.velociTimer = new VelociTimer();
+        this.W_KEY = Client.getKeyBindFromKey(Keyboard.KEY_W);
+        this.A_KEY = Client.getKeyBindFromKey(Keyboard.KEY_A);
+        this.D_KEY = Client.getKeyBindFromKey(Keyboard.KEY_D);
+
+        this.velociTimer = new VelociTimer(10);
 
         // General macro stuffs
         this.going = null;
@@ -89,26 +93,26 @@ export default class Mushroom extends Macro {
 
     right(){
         this.going = "right";
-        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
-        this.myRobot.keyRelease(KeyEvent.VK_A);
-        this.myRobot.keyPress(KeyEvent.VK_W);
-        this.myRobot.keyPress(KeyEvent.VK_D);
+        // this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
+        this.A_KEY.setState(false);
+        this.W_KEY.setState(true);
+        this.D_KEY.setState(true);
     }
 
     left(){
         this.going = "left";
         // check if the mouse is already pressed
         this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
-        this.myRobot.keyRelease(KeyEvent.VK_D);
-        this.myRobot.keyRelease(KeyEvent.VK_W);
-        this.myRobot.keyPress(KeyEvent.VK_A);
+        this.D_KEY.setState(false);
+        this.W_KEY.setState(false);
+        this.A_KEY.setState(true);
     }
 
     stop(){
         this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
-        this.myRobot.keyRelease(KeyEvent.VK_W);
-        this.myRobot.keyRelease(KeyEvent.VK_A);
-        this.myRobot.keyRelease(KeyEvent.VK_D);
+        this.W_KEY.setState(false);
+        this.A_KEY.setState(false);
+        this.D_KEY.setState(false);
     }
 
     on_pause(){
