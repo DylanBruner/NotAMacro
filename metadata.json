@@ -3,6 +3,6 @@
   "creator": "CheatersGetBanned",
   "version": "1.3",
   "description": "cheatersgetbanned",
-  "requires": ["Vigilance"],
+  "requires": ["Vigilance", "requestV2"],
   "entry": "index.js"
 }

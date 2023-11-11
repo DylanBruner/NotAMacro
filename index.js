@@ -13,10 +13,20 @@ import ADMacro from "./macros/admacro";
 import PumpkinMelonMacro from "./macros/pumpkinmelon";
 import WarpBack from "./macros/warpback";
 import Core from "./helpers/core";
+import request from "../requestV2";
 
 const pauseKey = new KeyBind("Toggle Key", Keyboard.KEY_SEMICOLON, "NotAMacro")
 
 const PREFIX = "§7[§cNotAMacro§7] §r";
+
+request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest) => {
+    if (manifest.version != Core.version){
+        ChatLib.chat(PREFIX + "§cNew version available! §7(" + manifest.version + ") §ahttps://github.com/dylanbruner/NotAMacro/releases/latest");
+    }
+}).catch((err) => {
+    ChatLib.chat(PREFIX + "§cFailed to check for updates!");
+    ChatLib.chat(PREFIX + "§c" + err);
+});
 
 class Scope {
     constructor(){
