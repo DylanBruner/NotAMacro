@@ -24,7 +24,7 @@ const PREFIX = "§7[§cNotAMacro§7] §r";
 
 request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest) => { // returns [{"version": "1.3.1", "url": "Not A Macro-v1.3.7z", "changelog": "Added a new macro!\nFixed a bug!\nFixed another bug!"}]
     manifest = JSON.parse(manifest);
-    
+
     if (manifest[0].version != Consts.version){
         // line break thingy
         ChatLib.chat(`§7§m${ChatLib.getChatBreak('=')}`);
@@ -48,19 +48,12 @@ request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest)
 });
 
 register('command', () => {
-    // run the console command curl
-    // ChatLib.chat(PREFIX + "§aDownloading update...");
-    // JavaRuntime.getRuntime().exec(`curl -L https://dylanbruner.github.io/NotAMacro/release/${manifest[0].url} -o ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z`);
-    // ChatLib.chat(PREFIX + "§aInstalling update...");
-
     ChatLib.chat(`${PREFIX}&a Fetching version info...`);
     request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest) => {
         manifest = JSON.parse(manifest);
         ChatLib.chat(`${PREFIX}&a Downloading update...`);
-        JavaRuntime.getRuntime().exec(`curl -L ${Utils.escapeUrl("https://dylanbruner.github.io/NotAMacro/release/"+manifest[0].url)} -o ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z`);
-        ChatLib.chat(`url: ${Utils.escapeUrl("https://dylanbruner.github.io/NotAMacro/release/"+manifest[0].url)}`)
+        JavaRuntime.getRuntime().exec(`curl -L ${Utils.escapeUrl("https://dylanbruner.github.io/NotAMacro/release/"+manifest[0].filename)} -o ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z`);
         ChatLib.chat(`${PREFIX}&a Installing update...`);
-        ChatLib.chat(`${Config.modulesFolder}/NotAMacro/7zr.exe x ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z -o${Config.modulesFolder}/NotAMacro/ -y`)
         JavaRuntime.getRuntime().exec(`"${Config.modulesFolder}/NotAMacro/7zr.exe" x ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z -o${Config.modulesFolder}/NotAMacro/ -y -p${Consts.UPDATE_TOKEN}`);
         // copy the files from the 'temp' folder to the 'NotAMacro' folder
         JavaRuntime.getRuntime().exec(`xcopy ${Config.modulesFolder}/NotAMacro/temp ${Config.modulesFolder}/NotAMacro /E /Y`);
