@@ -23,10 +23,9 @@ const pauseKey = new KeyBind("Toggle Key", Keyboard.KEY_SEMICOLON, "NotAMacro")
 const PREFIX = "§7[§cNotAMacro§7] §r";
 
 request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest) => { // returns [{"version": "1.3.1", "url": "Not A Macro-v1.3.7z", "changelog": "Added a new macro!\nFixed a bug!\nFixed another bug!"}]
-    // manifest = JSON.parse(manifest);
-    manifest = [{"version": "1.3.1", "url": "Not A Macro-v1.3.7z", "changelog": "Added a new macro!\nFixed a bug!\nFixed another bug!"}]
-
-    if (manifest[0].version != Consts.VERSION){
+    manifest = JSON.parse(manifest);
+    
+    if (manifest[0].version != Consts.version){
         // line break thingy
         ChatLib.chat(`§7§m${ChatLib.getChatBreak('=')}`);
         ChatLib.chat(PREFIX + "§cUpdate available! §e" + Consts.version + " §7-> §e" + manifest[0].version);
@@ -41,7 +40,7 @@ request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest)
         ChatLib.chat(`§7§m${ChatLib.getChatBreak('=')}`);
 
     } else {
-        ChatLib.chat(PREFIX + "§aUp to date!");
+        ChatLib.chat(PREFIX + "§aUp to date! " + Consts.version + " = " + manifest[0].version);
     }
 }).catch((err) => {
     ChatLib.chat(PREFIX + "§cFailed to check for updates!");
