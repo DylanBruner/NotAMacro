@@ -55,10 +55,10 @@ register('command', () => {
         JavaRuntime.getRuntime().exec(`curl -L ${Utils.escapeUrl("https://dylanbruner.github.io/NotAMacro/release/"+manifest[0].filename)} -o ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z`);
         ChatLib.chat(`${PREFIX}&a Installing update...`);
         JavaRuntime.getRuntime().exec(`"${Config.modulesFolder}/NotAMacro/7zr.exe" x ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z -o${Config.modulesFolder}/NotAMacro/ -y -p${Consts.UPDATE_TOKEN}`);
-        // copy the files from the 'temp' folder to the 'NotAMacro' folder
-        JavaRuntime.getRuntime().exec(`xcopy ${Config.modulesFolder}/NotAMacro/temp ${Config.modulesFolder}/NotAMacro /E /Y`);
+        ChatLib.chat(`xcopy "${Config.modulesFolder}/NotAMacro/temp" "${Config.modulesFolder}/NotAMacro" /E /Y`)
+        JavaRuntime.getRuntime().exec(cmd);
         ChatLib.chat(`${PREFIX}&a Cleaning up...`);
-        JavaRuntime.getRuntime().exec(`rmdir ${Config.modulesFolder}/NotAMacro/temp /S /Q`);
+        JavaRuntime.getRuntime().exec(`cmd.exe /k rmdir ${Config.modulesFolder}/NotAMacro/temp /S /Q`);
         ChatLib.chat(`${PREFIX}&a Reloading...`);
         ChatTriggers.reloadCT();
     }).catch((err) => {
