@@ -14,19 +14,66 @@ import PumpkinMelonMacro from "./macros/pumpkinmelon";
 import WarpBack from "./macros/warpback";
 import Core from "./helpers/core";
 import request from "../requestV2";
+import Consts from "./data/shared";
+import Utils from "./helpers/utils";
+
+const JavaRuntime = Java.type("java.lang.Runtime");
 
 const pauseKey = new KeyBind("Toggle Key", Keyboard.KEY_SEMICOLON, "NotAMacro")
-
 const PREFIX = "§7[§cNotAMacro§7] §r";
 
-request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest) => {
-    if (manifest.version != Core.version){
-        ChatLib.chat(PREFIX + "§cNew version available! §7(" + manifest.version + ") §ahttps://github.com/dylanbruner/NotAMacro/releases/latest");
+request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest) => { // returns [{"version": "1.3.1", "url": "Not A Macro-v1.3.7z", "changelog": "Added a new macro!\nFixed a bug!\nFixed another bug!"}]
+    // manifest = JSON.parse(manifest);
+    manifest = [{"version": "1.3.1", "url": "Not A Macro-v1.3.7z", "changelog": "Added a new macro!\nFixed a bug!\nFixed another bug!"}]
+
+    if (manifest[0].version != Consts.VERSION){
+        // line break thingy
+        ChatLib.chat(`§7§m${ChatLib.getChatBreak('=')}`);
+        ChatLib.chat(PREFIX + "§cUpdate available! §e" + Consts.version + " §7-> §e" + manifest[0].version);
+        // if there's a changelog, print it
+        if (manifest[0].changelog != undefined){
+            ChatLib.chat(PREFIX + "§7Changelog:");
+            for (line of manifest[0].changelog.split("\n")){
+                ChatLib.chat(PREFIX + "§7   - §e" + line);
+            }
+        }
+        ChatLib.chat(PREFIX + "§7Run §3/namupdate §7to automatically download and reload!");
+        ChatLib.chat(`§7§m${ChatLib.getChatBreak('=')}`);
+
+    } else {
+        ChatLib.chat(PREFIX + "§aUp to date!");
     }
 }).catch((err) => {
     ChatLib.chat(PREFIX + "§cFailed to check for updates!");
     ChatLib.chat(PREFIX + "§c" + err);
 });
+
+register('command', () => {
+    // run the console command curl
+    // ChatLib.chat(PREFIX + "§aDownloading update...");
+    // JavaRuntime.getRuntime().exec(`curl -L https://dylanbruner.github.io/NotAMacro/release/${manifest[0].url} -o ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z`);
+    // ChatLib.chat(PREFIX + "§aInstalling update...");
+
+    ChatLib.chat(`${PREFIX}&a Fetching version info...`);
+    request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest) => {
+        manifest = JSON.parse(manifest);
+        ChatLib.chat(`${PREFIX}&a Downloading update...`);
+        JavaRuntime.getRuntime().exec(`curl -L ${Utils.escapeUrl("https://dylanbruner.github.io/NotAMacro/release/"+manifest[0].url)} -o ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z`);
+        ChatLib.chat(`url: ${Utils.escapeUrl("https://dylanbruner.github.io/NotAMacro/release/"+manifest[0].url)}`)
+        ChatLib.chat(`${PREFIX}&a Installing update...`);
+        ChatLib.chat(`${Config.modulesFolder}/NotAMacro/7zr.exe x ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z -o${Config.modulesFolder}/NotAMacro/ -y`)
+        JavaRuntime.getRuntime().exec(`"${Config.modulesFolder}/NotAMacro/7zr.exe" x ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z -o${Config.modulesFolder}/NotAMacro/ -y -p${Consts.UPDATE_TOKEN}`);
+        // copy the files from the 'temp' folder to the 'NotAMacro' folder
+        JavaRuntime.getRuntime().exec(`xcopy ${Config.modulesFolder}/NotAMacro/temp ${Config.modulesFolder}/NotAMacro /E /Y`);
+        ChatLib.chat(`${PREFIX}&a Cleaning up...`);
+        JavaRuntime.getRuntime().exec(`rmdir ${Config.modulesFolder}/NotAMacro/temp /S /Q`);
+        ChatLib.chat(`${PREFIX}&a Reloading...`);
+        ChatTriggers.reloadCT();
+    }).catch((err) => {
+        ChatLib.chat(PREFIX + "§cFailed to update!");
+        ChatLib.chat(PREFIX + "§c" + err);
+    });
+}).setName("namupdate");
 
 class Scope {
     constructor(){

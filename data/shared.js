@@ -4,5 +4,6 @@ export default new (class Consts {
         
         this.version = data.version;
         this.debug   = true;
+        this.UPDATE_TOKEN = "password";
     }
 })();

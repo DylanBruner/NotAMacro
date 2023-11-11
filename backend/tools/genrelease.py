@@ -7,7 +7,7 @@ OUTPUT_PATH = "docs/release"
 INPUT_PATHS = ["data", "helpers", "macros", "index.js", "metadata.json"]
 MANIFEST_PATH = "docs/manifest.json"
 
-SEVENZIP_PATH = os.path.abspath("docs/tools/7zr.exe")
+SEVENZIP_PATH = os.path.abspath("7zr.exe")
 TEMP_PATH = "temp"
 
 # ========================================
