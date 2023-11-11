@@ -61,7 +61,7 @@
 
 	[mushroom.obsidian_pause]
 		pause_time = 13
-		switch_direction = true
+		switch_direction = false
 		enabled = true
 
 ["a/d_macro"]
@@ -82,14 +82,18 @@
 	[fail-safes.slot_change]
 		slot_change = true
 
+	[fail-safes.random_delay]
+		random_delay_maximum = 10
+		random_delay_minimum = 3
+
 	[fail-safes.player_detection]
 		player_detection = false
 		player_detection_range = 10
 
 	[fail-safes.movement]
-		yaw_change = true
+		yaw_change = false
 		teleport = false
-		pitch_change = true
+		pitch_change = false
 		"pitch/yaw_change_amount" = 1
 		teleport_distance = 2
 

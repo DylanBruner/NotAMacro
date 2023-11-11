@@ -83,6 +83,7 @@ export default class Mushroom extends Macro {
         this.A_KEY = Client.getKeyBindFromKey(Keyboard.KEY_A);
         this.D_KEY = Client.getKeyBindFromKey(Keyboard.KEY_D);
 
+
         this.velociTimer = new VelociTimer(5);
 
         // General macro stuffs
@@ -114,7 +115,12 @@ export default class Mushroom extends Macro {
     }
 
     on_pause(){
-        this.stop();
+        this.stop(true);
+    }
+
+    on_start(){
+        // left click
+        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
     }
 
     on_resume(){
