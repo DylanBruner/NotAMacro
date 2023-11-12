@@ -1,4 +1,4 @@
-import os, json, subprocess, zipfile, shutil
+import os, json, subprocess, zipfile, shutil, pyzipper
 
 # CONFIG =================================
 ENCRYPTION_PASSWORD = "password"
@@ -28,7 +28,13 @@ for path in INPUT_PATHS:
         shutil.copy(path, os.path.join(TEMP_PATH, path))
 
 print("Creating zip file")
-subprocess.run([SEVENZIP_PATH, "a", "-mhe", "-p" + ENCRYPTION_PASSWORD, os.path.join(OUTPUT_PATH, f"{metadata['name']}-v{metadata['version']}.7z"), os.path.join(TEMP_PATH, "*")])
+# subprocess.run([SEVENZIP_PATH, "a", "-mhe", "-p" + ENCRYPTION_PASSWORD, os.path.join(OUTPUT_PATH, f"{metadata['name']}-v{metadata['version']}.7z"), os.path.join(TEMP_PATH, "*")])
+with pyzipper.AESZipFile(os.path.join(OUTPUT_PATH, f"{metadata['name']}-v{metadata['version']}.7z"), 'w', compression=pyzipper.ZIP_LZMA, encryption=pyzipper.WZ_AES) as zf:
+    zf.setpassword(ENCRYPTION_PASSWORD.encode('utf-8'))
+    for root, dirs, files in os.walk(TEMP_PATH):
+        for file in files:
+            zf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), TEMP_PATH))
+
 
 shutil.rmtree(TEMP_PATH)
 
