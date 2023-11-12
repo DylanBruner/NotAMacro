@@ -14,22 +14,26 @@ import PumpkinMelonMacro from "./macros/pumpkinmelon";
 import WarpBack from "./macros/warpback";
 import request from "../requestV2";
 import Consts from "./data/shared";
+import Utils from "./helpers/utils";
 
 const JavaRuntime = Java.type("java.lang.Runtime");
+const JavaScanner = Java.type("java.util.Scanner");
 
 const pauseKey = new KeyBind("Toggle Key", Keyboard.KEY_SEMICOLON, "NotAMacro")
 const PREFIX = "§7[§cNotAMacro§7] §r";
 
 request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest) => { // returns [{"version": "1.3.1", "url": "Not A Macro-v1.3.7z", "changelog": "Added a new macro!\nFixed a bug!\nFixed another bug!"}]
     manifest = JSON.parse(manifest);
+    manifest = Utils.getLatestVersion(manifest);
+    ChatLib.chat(manifest)
 
-    if (manifest[0].version != Consts.version){
+    if (manifest.version != Consts.version){
         ChatLib.chat(`§7§m${ChatLib.getChatBreak('=')}`);
-        ChatLib.chat(PREFIX + "§cUpdate available! §e" + Consts.version + " §7-> §e" + manifest[0].version);
+        ChatLib.chat(PREFIX + "§cUpdate available! §e" + Consts.version + " §7-> §e" + manifest.version);
         // if there's a changelog, print it
-        if (manifest[0].changelog != undefined){
+        if (manifest.changelog != undefined){
             ChatLib.chat(PREFIX + "§7Changelog:");
-            for (line of manifest[0].changelog.split("\n")){
+            for (line of manifest.changelog.split("\n")){
                 if (line.trim() == "") continue;
                 ChatLib.chat(PREFIX + "§7   - §e" + line);
             }
@@ -46,10 +50,31 @@ request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest)
 });
 
 register('command', () => {
-    ChatLib.chat(`${PREFIX}&a Updating...`);
-    JavaRuntime.getRuntime().exec(`"${Config.modulesFolder}/NotAMacro/tools/updater.exe" "${Config.modulesFolder}/NotAMacro"`)
-    ChatLib.chat(`${PREFIX}&a Reloading...`);
-    ChatTriggers.reloadCT();
+    setTimeout(() => {
+        ChatLib.chat(`${PREFIX}&a Updating...`);
+        const process = JavaRuntime.getRuntime().exec(`python.exe "${Config.modulesFolder}/NotAMacro/tools/updater.py" "${Config.modulesFolder}/NotAMacro"`);
+        // process.waitFor();
+
+        const stdin = new JavaScanner(process.getInputStream(), "UTF-8");
+        const stderr = new JavaScanner(process.getErrorStream(), "UTF-8");
+
+        // while the process is still running, print the output
+        while (process.isAlive()) {
+            if (stdin.hasNextLine()){
+               const line = stdin.nextLine();
+               if (line.indexOf('RequestsDependencyWarning') == -1){
+                    ChatLib.chat(line);
+               } 
+            }
+            if (stderr.hasNextLine()) ChatLib.chat(stderr.nextLine());
+        }
+
+        stdin.close();
+        stderr.close();
+
+        ChatLib.chat(`${PREFIX}&a Reloading...`);
+        ChatTriggers.reloadCT();
+    }, 1);
 }).setName("namupdate");
 
 class Scope {
@@ -62,7 +87,7 @@ class Scope {
     }
 }
 
-ChatLib.chat('updater updtated')
+ChatLib.chat('updater updtated frfrfr');
 
 const scope = new Scope();
 const generalUtils = new GeneralUtils();
