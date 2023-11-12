@@ -24,13 +24,13 @@ request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest)
     manifest = JSON.parse(manifest);
 
     if (manifest[0].version != Consts.version){
-        // line break thingy
         ChatLib.chat(`§7§m${ChatLib.getChatBreak('=')}`);
         ChatLib.chat(PREFIX + "§cUpdate available! §e" + Consts.version + " §7-> §e" + manifest[0].version);
         // if there's a changelog, print it
         if (manifest[0].changelog != undefined){
             ChatLib.chat(PREFIX + "§7Changelog:");
             for (line of manifest[0].changelog.split("\n")){
+                if (line.trim() == "") continue;
                 ChatLib.chat(PREFIX + "§7   - §e" + line);
             }
         }
@@ -47,8 +47,7 @@ request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest)
 
 register('command', () => {
     ChatLib.chat(`${PREFIX}&a Updating...`);
-    // JavaRuntime.getRuntime().exec(`curl -L ${Utils.escapeUrl("https://dylanbruner.github.io/NotAMacro/release/"+manifest[0].filename)} -o ${Config.modulesFolder}/NotAMacro/Not-A-Macro.7z`);
-    JavaRuntime.getRuntime().exec(`tools/updater.exe`)
+    JavaRuntime.getRuntime().exec(`"${Config.modulesFolder}/NotAMacro/tools/updater.exe" "${Config.modulesFolder}/NotAMacro"`)
     ChatLib.chat(`${PREFIX}&a Reloading...`);
     ChatTriggers.reloadCT();
 }).setName("namupdate");
@@ -63,9 +62,7 @@ class Scope {
     }
 }
 
-ChatLib.chat('wAoH????')
-
-// Core.loadMacroFromString(FileLib.read(`${Config.modulesFolder}/NotAMacro/macros/admacro.js`))
+ChatLib.chat('updater updtated')
 
 const scope = new Scope();
 const generalUtils = new GeneralUtils();

@@ -6,7 +6,7 @@ ENCRYPTION_PASSWORD = "BDkhZ9jDZdOernS0gLqHowMatI030vUg"
 META_PATH = "NotAMacro/metadata.json"
 
 OUTPUT_PATH = "docs/release"
-INPUT_PATHS = ["NotAMacro/data", "NotAMacro/helpers", "NotAMacro/macros", "NotAMacro/index.js", META_PATH]
+INPUT_PATHS = ["NotAMacro/data", "NotAMacro/helpers", "NotAMacro/macros", "NotAMacro/tools", "NotAMacro/index.js", META_PATH]
 MANIFEST_PATH = "docs/manifest.json"
 
 TEMP_PATH = "temp"
@@ -33,12 +33,11 @@ for path in INPUT_PATHS:
     else:
         shutil.copy(path, os.path.join(TEMP_PATH, path))
 
-print("Creating zip file")
 with pyzipper.AESZipFile(os.path.join(OUTPUT_PATH, f"{metadata['name']}-v{metadata['version']}.7z"), 'w', compression=pyzipper.ZIP_LZMA, encryption=pyzipper.WZ_AES) as zf:
     zf.setpassword(ENCRYPTION_PASSWORD.encode('utf-8'))
     for root, dirs, files in os.walk(TEMP_PATH):
         for file in files:
-            zf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), TEMP_PATH))
+            zf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(TEMP_PATH, 'NotAMacro')))
 
 
 shutil.rmtree(TEMP_PATH)
