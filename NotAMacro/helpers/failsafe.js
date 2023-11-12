@@ -1,4 +1,5 @@
 import Config from ".././data/Config";
+import request from "../../requestV2";
 
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
 
@@ -23,6 +24,25 @@ const PREFIX = "§7[§cNotAMacro§7] §r";
 export default class Failsafe {
     static getConfig(){
         return {
+            'FailSafeDiscordWebhookEnabled': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "Discord Webhook Enabled",
+                    category: "Fail-Safes",
+                    subcategory: "Discord"
+                }
+            },
+            'FailSafeDiscordWebhook': {
+                type: PropertyType.TEXT,
+                default: "",
+                config: {
+                    name: "Discord Webhook",
+                    description: "The discord webhook to send messages to when a failsafe trips",
+                    category: "Fail-Safes",
+                    subcategory: "Discord"
+                }
+            },
             'FailSafeRandDelayMin': {
                 type: PropertyType.SLIDER,
                 default: 1,
@@ -31,7 +51,8 @@ export default class Failsafe {
                     category: "Fail-Safes",
                     subcategory: "Random Delay",
                     min: 1,
-                    max: 100
+                    max: 100,
+                    hidden: true
                 }
             }, 'FailSafeRandDelayMax': {
                 type: PropertyType.SLIDER,
@@ -41,7 +62,8 @@ export default class Failsafe {
                     category: "Fail-Safes",
                     subcategory: "Random Delay",
                     min: 1,
-                    max: 100
+                    max: 100,
+                    hidden: true
                 }
             }, 'FailSafeYawChange': {
                 type: PropertyType.SWITCH,
@@ -305,6 +327,20 @@ export default class Failsafe {
         this.lastX = Player.getX();
         this.lastY = Player.getY();
         this.lastZ = Player.getZ();
+    }
+
+    sendDiscordPing(){
+        request({
+            url: Config.FailSafeDiscordWebhook,
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json',
+                "User-Agent":"Mozilla/5.0"
+            },
+            body: {
+                content: `@here Fail-safe triggered! Reason: ${this.tripReason}`
+            }
+        })
     }
     
     // Things to be used by the macro

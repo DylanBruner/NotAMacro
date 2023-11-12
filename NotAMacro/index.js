@@ -41,7 +41,7 @@ request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest)
         ChatLib.chat(`§7§m${ChatLib.getChatBreak('=')}`);
 
     } else {
-        ChatLib.chat(PREFIX + "§aUp to date! " + Consts.version + " = " + manifest.version);
+        ChatLib.chat(PREFIX + "§aUp to date! " + Consts.version + "/" + manifest.version);
     }
 }).catch((err) => {
     ChatLib.chat(PREFIX + "§cFailed to check for updates!");
@@ -150,6 +150,10 @@ register("tick", () => {
         scope.macroEnabled = false;
         scope.macro.on_pause();
         scope.failsafe.on_pause();
+
+        if (Cfg.FailSafeDiscordWebhookEnabled){
+            scope.failsafe.sendDiscordPing();
+        }
     }
     if (!scope.macroEnabled && scope.failsafe.forceRestart){
         scope.failsafe.forceRestart = false;
