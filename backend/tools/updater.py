@@ -27,7 +27,7 @@ try:
     with pyzipper.AESZipFile(f'{MODULE_FOLDER}/temp/update.7z') as zf:
         old = os.getcwd()
         os.chdir(f'{MODULE_FOLDER}')
-        zf.extractall(pwd='BDkhZ9jDZdOernS0gLqHowMatI030vUg'.encode('utf-8'))
+        zf.extractall(pwd='BDkhZ9jDZdOernS0gLqHowMatI030vUg'.encode('utf-8'), members=[x for x in zf.namelist() if not x.startswith('tools/')])
         os.chdir(old)
 
     print(f"{PREFIX}&cCleaning up...")

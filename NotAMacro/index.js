@@ -51,7 +51,7 @@ request('https://dylanbruner.github.io/NotAMacro/manifest.json').then((manifest)
 register('command', () => {
     setTimeout(() => {
         ChatLib.chat(`${PREFIX}&a Updating...`);
-        const process = JavaRuntime.getRuntime().exec(`python.exe "${Config.modulesFolder}/NotAMacro/tools/updater.py" "${Config.modulesFolder}/NotAMacro"`);
+        const process = JavaRuntime.getRuntime().exec(`"${Config.modulesFolder}/NotAMacro/tools/updater.exe" "${Config.modulesFolder}/NotAMacro"`);
         // process.waitFor();
 
         const stdin = new JavaScanner(process.getInputStream(), "UTF-8");
