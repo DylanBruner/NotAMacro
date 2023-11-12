@@ -63,7 +63,7 @@ class Scope {
     }
 }
 
-ChatLib.chat('updater updtated')
+ChatLib.chat('wAoH????')
 
 // Core.loadMacroFromString(FileLib.read(`${Config.modulesFolder}/NotAMacro/macros/admacro.js`))
 

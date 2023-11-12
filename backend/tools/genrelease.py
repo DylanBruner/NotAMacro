@@ -3,15 +3,20 @@ import os, json, shutil, pyzipper
 # CONFIG =================================
 ENCRYPTION_PASSWORD = "BDkhZ9jDZdOernS0gLqHowMatI030vUg"
 
-META_PATH = "macro/metadata.json"
+META_PATH = "NotAMacro/metadata.json"
 
 OUTPUT_PATH = "docs/release"
-INPUT_PATHS = ["macro/data", "macro/helpers", "macro/macros", "macro/index.js", META_PATH]
+INPUT_PATHS = ["NotAMacro/data", "NotAMacro/helpers", "NotAMacro/macros", "NotAMacro/index.js", META_PATH]
 MANIFEST_PATH = "docs/manifest.json"
 
 TEMP_PATH = "temp"
 
 # ========================================
+
+changelog = ""
+print("Enter changelog (exit to exit):")
+while (line := input("Line> ")).strip() != "exit":
+    changelog += line + "\n"
 
 if os.path.exists(TEMP_PATH):
     shutil.rmtree(TEMP_PATH)
@@ -44,7 +49,8 @@ with open(MANIFEST_PATH, 'r') as f:
 
 manifest.append({
     "version": metadata['version'],
-    "filename": f"{metadata['name']}-v{metadata['version']}.7z"
+    "filename": f"{metadata['name']}-v{metadata['version']}.7z",
+    "changelog": changelog
 })
 
 # remove duplicates
