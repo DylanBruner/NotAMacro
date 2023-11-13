@@ -86,8 +86,6 @@ class Scope {
     }
 }
 
-ChatLib.chat('updater updtated frfrfr');
-
 const scope = new Scope();
 const generalUtils = new GeneralUtils();
 const macros = [
