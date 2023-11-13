@@ -9,5 +9,12 @@
         ".prettierrc": true,
         ".gitignore": true
     },
-    "explorerExclude.backup": {}
+    "explorerExclude.backup": {},
+    "VsCodeTaskButtons.showCounter": false,
+    "VsCodeTaskButtons.tasks": [
+        {
+            "label": "$(notebook-move-down) Push Files",
+            "task": "push-files"
+        }
+    ]
 }
