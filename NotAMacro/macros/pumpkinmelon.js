@@ -75,7 +75,6 @@ export default class PumpkinMelonMacro extends Macro {
             if (this.tempWPressTime <= 0){
                 this.tempWPressTime = 0; // will get set to negative 1 later, disabling this
                 this.myRobot.keyRelease(KeyEvent.VK_W);
-                ChatLib.chat("Released W");
             }
             this.tempWPressTime--;
         }
@@ -101,7 +100,6 @@ export default class PumpkinMelonMacro extends Macro {
                 this.myRobot.keyRelease(KeyEvent.VK_D);
                 this.myRobot.keyPress(KeyEvent.VK_W);
             }
-            ChatLib.chat("Pressed W");
             this.goingForward = true;
         } else if (this.velociTimer.isStopped() && this.goingForward){
             this.velociTimer.reset();
