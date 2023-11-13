@@ -26,6 +26,8 @@ export default class PumpkinMelonMacro extends Macro {
     constructor() {
         this.macroID = 7;
         this.macroName = "PumpkinMelon";
+        this.macroType = "Farming";
+        
         this.myRobot = new robot();
 
         this.velociTimer = new VelociTimer(4);

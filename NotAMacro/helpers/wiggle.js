@@ -10,17 +10,28 @@ debug = (msg) => {
 }
 
 export default class Wiggle {
-    static getConfig() {}
+    static getConfig() {
+        return {
+            'WiggleEnabled': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "AntiMacro Wiggle Bypass",
+                    description: "Bypasses anti-macro plugins by wiggling your head when it detects you're not gaining xp.",
+                    category: "General Macro Config",
+                    subcategory: "Farming",
+                }
+            }
+        }
+    }
 
     constructor(){
         this.targetPoints = [ // list of different sets of points to wiggle to
-            [[0, -10]],
-            [[0, -30]],
-            [[0, -35]],
-            [[0, -40]]
+            [[0, -5]],
+            [[0, -10]]
         ];
 
-        this.lastFarmingTime = 0;
+        this.lastXpGainTime = 0;
 
         this.step = -1;
         this.path = 0;
@@ -46,9 +57,11 @@ export default class Wiggle {
         register('actionBar', (event) => {
             const text = ChatLib.getChatMessage(event).removeFormatting();
             if (text.indexOf('Farming') != -1)
-                this.lastFarmingTime = Date.now();
+                this.lastXpGainTime = Date.now();
         });
     }
+
+    // stuff to be used elsewhere
 
     wiggle(){
         this.originalPitch = Player.getPitch();
@@ -62,9 +75,19 @@ export default class Wiggle {
         this.pointPath = 1;
         this.overshoot = Math.round(Math.random() * 10 + 0.5)
 
-        this.speed = Math.round(Math.random() * 2.5 + 2.5);
+        this.speed = Math.round(Math.random() * 2);
         this.closeSpeed = this.speed;
     }
+
+    isFarming(){
+        return Date.now() - this.lastXpGainTime < 5000;
+    }
+
+    reset(){
+        this.lastXpGainTime = Date.now();
+    }
+
+    // =================================================
 
     tick_movement(){
         if (this.yawTarget != Player.getYaw()) {
@@ -137,7 +160,11 @@ export default class Wiggle {
             return;
         }
 
-        if (this.step == -2) {this.step = -1; return;};
+        if (this.step == -2) {
+            Safety.setYaw(this.originalYaw);
+            Safety.setPitch(this.originalPitch);
+            this.step = -1; return;
+        };
 
 
         if (this.step < this.targetPoints[this.path].length){

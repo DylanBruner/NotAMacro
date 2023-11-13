@@ -525,7 +525,7 @@ export default class IslandForager extends Macro {
                 this.stage = STAGE_BREAKING;
                 debug("§3Detected tree growth, breaking trees");
             } else if (this.stage == STAGE_WAITING_FOR_PLACE) {
-                if (this.getTreeCount() == 3) {
+                if (this.getTreeCount() >= 3) {
                     this.stage = STAGE_PLANTING;
                     debug(`&3detected change from ${this.lastTreeCount} to ${this.getTreeCount()}, planting saplings`);
                     this.lastTreeCount = this.getTreeCount();
@@ -559,10 +559,12 @@ export default class IslandForager extends Macro {
                     this.gotoPY(this.points[this.step][0],this.points[this.step][1]);
                     this.step++;
                     this.stage = STAGE_WAITING_FOR_PLACE;
-                    this.globalcooldown = 1;
+                    // this.globalcooldown = 3;
                 }
                 debug("§3Planting saplings");
             } else if (this.stage == STAGE_BONEMEAL) {
+                if (this.getTreeCount() != 4) return;
+                
                 this.setSlot(this.boneMealSlot);
                 this.stage = STAGE_WAITING_FOR_GROWTH;
                 debug("§3Bonemealing saplings");

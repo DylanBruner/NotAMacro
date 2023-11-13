@@ -77,6 +77,8 @@ export default class Mushroom extends Macro {
     constructor() {
         this.macroID = 0;
         this.macroName = "Mushroom";
+        this.macroType = "Farming";
+        
         this.myRobot = new robot();
 
         this.W_KEY = Client.getKeyBindFromKey(Keyboard.KEY_W);

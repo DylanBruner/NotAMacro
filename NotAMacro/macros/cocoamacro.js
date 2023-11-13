@@ -27,6 +27,8 @@ export default class CocoaMacro extends Macro {
     constructor() {
         this.macroID = 6;
         this.macroName = "Cocoa";
+        this.macroType = "Farming";
+        
         this.myRobot = new robot();
 
         this.velociTimer = new VelociTimer(4);

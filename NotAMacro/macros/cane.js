@@ -47,6 +47,8 @@ export default class Cane extends Macro {
 
         this.macroID = 1;
         this.macroName = "Cane";
+        this.macroType = "Farming";
+        
         this.myRobot = new robot();
 
         this.velociTimer = new VelociTimer(4);

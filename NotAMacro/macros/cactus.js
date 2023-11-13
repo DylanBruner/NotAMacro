@@ -26,6 +26,7 @@ export default class CactusMacro extends Macro {
     constructor() {
         this.macroID = 5;
         this.macroName = "Cactus";
+        this.macroType = "Farming";
         this.myRobot = new robot();
 
         this.velociTimer = new VelociTimer(4);

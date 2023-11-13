@@ -47,6 +47,7 @@ export default class ADMacro extends Macro {
 
         this.macroID = 2;
         this.macroName = "A/D";
+        this.macroType = "Farming";
         this.myRobot = new robot();
 
         this.velociTimer = new VelociTimer(4);

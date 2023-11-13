@@ -15,6 +15,7 @@ import WarpBack from "./macros/warpback";
 import request from "../requestV2";
 import Consts from "./data/shared";
 import Utils from "./helpers/utils";
+import Wiggle from "./helpers/wiggle";
 
 const JavaRuntime = Java.type("java.lang.Runtime");
 const JavaScanner = Java.type("java.util.Scanner");
@@ -82,6 +83,8 @@ class Scope {
         this.macro = null;
         this.failsafe = new Failsafe();
         this.pauseKey = pauseKey;
+        this.wiggle = new Wiggle();
+        this.antiMacroLastAttempt = 0;
         this.PREFIX = PREFIX;
     }
 }
@@ -100,6 +103,7 @@ for (macro of macros){
     }
 }
 
+Cfg.registerTemplate(Wiggle.getConfig());
 Cfg.registerTemplate(Failsafe.getConfig());
 
 Cfg.init();
@@ -161,6 +165,18 @@ register("tick", () => {
         scope.failsafe.on_resume();
     }
 
+    if (scope.macroEnabled && !scope.wiggle.isFarming() && scope.macro.get_type() == "Farming" && Cfg.WiggleEnabled){
+        if (Date.now() - scope.antiMacroLastAttempt > 60000){
+            ChatLib.chat(PREFIX + "§cAttempting to bypass anti-macro...");
+            scope.antiMacroLastAttempt = Date.now();
+            setTimeout(() => {
+                scope.wiggle.wiggle();
+            }, 1000);
+        } else if (Date.now() - scope.antiMacroLastAttempt > 5000){
+            ChatLib.chat(PREFIX + "§cFailed to bypass anti-macro!");
+        }
+    }
+
     if (scope.macro != null && scope.macro.macroID != Cfg.SelectedMacro){
         scope.macro.on_pause(); // Only really needed for WarpBack but ig all of them can use this
         scope.macro = null;
@@ -179,6 +195,7 @@ register("tick", () => {
             ChatLib.chat(PREFIX + "§aStarting §e" + scope.macro.macroName + "§a macro!");
             scope.macro.on_start();
             scope.failsafe.on_resume();
+            scope.wiggle.reset();
         }
     } else if (scope.macro != null && pauseKey.isPressed()){
         scope.macroEnabled = !scope.macroEnabled;
@@ -190,6 +207,7 @@ register("tick", () => {
             ChatLib.chat(PREFIX + "§aResuming!");
             scope.macro.on_resume();
             scope.failsafe.on_resume();
+            scope.wiggle.reset();
         }
     }
 

@@ -276,7 +276,7 @@ export default class Failsafe {
 
     tick(){
         if (!this.running) return;
-        if (Config.IslandForagerDisableNormalFailSafes) return;
+        if (Config.IslandForagerDisableNormalFailsafes) return;
 
         // Yaw and Pitch ========================================================
         if (Config.FailSafeYawChange && Math.abs(Player.getYaw() - this.lastYaw) > Config.FailSafePitchYawChangeAmount / 10){
