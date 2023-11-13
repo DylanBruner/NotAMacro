@@ -4,5 +4,6 @@
   "version": "1.3.9",
   "description": "cheatersgetbanned",
   "requires": ["Vigilance", "requestV2"],
-  "entry": "index.js"
+  "entry": "index.js",
+  "debug": false
 }
