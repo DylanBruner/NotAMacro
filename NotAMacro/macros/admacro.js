@@ -50,6 +50,9 @@ export default class ADMacro extends Macro {
         this.macroType = "Farming";
         this.myRobot = new robot();
 
+        this.KEY_A = Client.getKeyBindFromKey(Keyboard.KEY_A);
+        this.KEY_D = Client.getKeyBindFromKey(Keyboard.KEY_D);
+
         this.velociTimer = new VelociTimer(4);
 
         this.going = null;
@@ -72,21 +75,21 @@ export default class ADMacro extends Macro {
     left(){
         this.going = "left";
         this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
-        this.myRobot.keyRelease(KeyEvent.VK_D);
-        this.myRobot.keyPress(KeyEvent.VK_A);
+        this.KEY_D.setState(false);
+        this.KEY_A.setState(true);
     }
 
     right(){
         this.going = "right";
         this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
-        this.myRobot.keyRelease(KeyEvent.VK_A);
-        this.myRobot.keyPress(KeyEvent.VK_D);
+        this.KEY_A.setState(false);
+        this.KEY_D.setState(true);
     }
 
     stop(){
         this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
-        this.myRobot.keyRelease(KeyEvent.VK_D);
-        this.myRobot.keyRelease(KeyEvent.VK_A);
+        this.KEY_A.setState(false);
+        this.KEY_D.setState(false);
     }
 
     tick(){

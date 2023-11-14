@@ -29,6 +29,9 @@ export default class PumpkinMelonMacro extends Macro {
         this.macroType = "Farming";
         
         this.myRobot = new robot();
+        this.KEY_W = Client.getKeyBindFromKey(Keyboard.KEY_W);
+        this.KEY_A = Client.getKeyBindFromKey(Keyboard.KEY_A);
+        this.KEY_D = Client.getKeyBindFromKey(Keyboard.KEY_D);
 
         this.velociTimer = new VelociTimer(4);
 
@@ -41,19 +44,19 @@ export default class PumpkinMelonMacro extends Macro {
     }
 
     on_pause(){
-        this.myRobot.keyRelease(KeyEvent.VK_W);
-        this.myRobot.keyRelease(KeyEvent.VK_A);
-        this.myRobot.keyRelease(KeyEvent.VK_D);
+        this.KEY_W.setState(false);
+        this.KEY_A.setState(false);
+        this.KEY_D.setState(false);
         this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
     }
 
     on_resume(){
         if (this.goingForward){
-            this.myRobot.keyPress(KeyEvent.VK_W);
+            this.KEY_W.setState(true);
         } else if (this.going == 'A'){
-            this.myRobot.keyPress(KeyEvent.VK_A);
+            this.KEY_A.setState(true);
         } else if (this.going == 'D'){
-            this.myRobot.keyPress(KeyEvent.VK_D);
+            this.KEY_D.setState(true);
         }
 
         this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
@@ -74,7 +77,7 @@ export default class PumpkinMelonMacro extends Macro {
         if (this.tempWPressTime != -1){
             if (this.tempWPressTime <= 0){
                 this.tempWPressTime = 0; // will get set to negative 1 later, disabling this
-                this.myRobot.keyRelease(KeyEvent.VK_W);
+                this.KEY_W.setState(false);
             }
             this.tempWPressTime--;
         }
@@ -84,21 +87,21 @@ export default class PumpkinMelonMacro extends Macro {
             this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
             if (Config.PumpkinMelonStartDirection == 0){
                 this.going = 'A';
-                this.myRobot.keyPress(KeyEvent.VK_A);
+                this.KEY_A.setState(true);
             } else if (Config.PumpkinMelonStartDirection == 1){
                 this.going = 'D';
-                this.myRobot.keyPress(KeyEvent.VK_D);
+                this.KEY_D.setState(true);
             }
         }
 
         if (this.velociTimer.isStopped() && !this.goingForward){
             this.velociTimer.reset();
             if (this.going == 'A'){
-                this.myRobot.keyRelease(KeyEvent.VK_A);
-                this.myRobot.keyPress(KeyEvent.VK_W);
+                this.KEY_A.setState(false);
+                this.KEY_W.setState(true);
             } else if (this.going == 'D'){
-                this.myRobot.keyRelease(KeyEvent.VK_D);
-                this.myRobot.keyPress(KeyEvent.VK_W);
+                this.KEY_D.setState(false);
+                this.KEY_W.setState(true);
             }
             this.goingForward = true;
         } else if (this.velociTimer.isStopped() && this.goingForward){
@@ -109,10 +112,10 @@ export default class PumpkinMelonMacro extends Macro {
 
             if (this.going == 'A'){
                 this.going = 'D';
-                this.myRobot.keyPress(KeyEvent.VK_D);
+                this.KEY_D.setState(true);
             } else if (this.going == 'D'){
                 this.going = 'A';
-                this.myRobot.keyPress(KeyEvent.VK_A);
+                this.KEY_A.setState(true);
             }
         }
     }

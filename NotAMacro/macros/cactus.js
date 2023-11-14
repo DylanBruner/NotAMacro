@@ -29,6 +29,10 @@ export default class CactusMacro extends Macro {
         this.macroType = "Farming";
         this.myRobot = new robot();
 
+        this.KEY_W = Client.getKeyBindFromKey(Keyboard.KEY_W);
+        this.KEY_A = Client.getKeyBindFromKey(Keyboard.KEY_A);
+        this.KEY_D = Client.getKeyBindFromKey(Keyboard.KEY_D);
+
         this.velociTimer = new VelociTimer(4);
 
         // General macro stuffs
@@ -38,19 +42,19 @@ export default class CactusMacro extends Macro {
     }
 
     on_pause(){
-        this.myRobot.keyRelease(KeyEvent.VK_W);
-        this.myRobot.keyRelease(KeyEvent.VK_A);
-        this.myRobot.keyRelease(KeyEvent.VK_D);
+        this.KEY_W.setState(false);
+        this.KEY_A.setState(false);
+        this.KEY_D.setState(false);
         this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
     }
 
     on_resume(){
         if (this.goingForward){
-            this.myRobot.keyPress(KeyEvent.VK_W);
+            this.KEY_W.setState(true);
         } else if (this.going == 'A'){
-            this.myRobot.keyPress(KeyEvent.VK_A);
+            this.KEY_A.setState(true);
         } else if (this.going == 'D'){
-            this.myRobot.keyPress(KeyEvent.VK_D);
+            this.KEY_D.setState(true);
         }
 
         this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
@@ -73,35 +77,36 @@ export default class CactusMacro extends Macro {
             this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
             if (Config.CactusStartDirection == 0){
                 this.going = 'A';
-                this.myRobot.keyPress(KeyEvent.VK_A);
+                this.KEY_A.setState(true);
             } else if (Config.CactusStartDirection == 1){
                 this.going = 'D';
-                this.myRobot.keyPress(KeyEvent.VK_D);
+                this.KEY_D.setState(true);
             }
         }
 
         if (this.velociTimer.isStopped() && !this.goingForward){
             this.velociTimer.reset();
             if (this.going == 'A'){
-                this.myRobot.keyRelease(KeyEvent.VK_A);
-                this.myRobot.keyPress(KeyEvent.VK_W);
+                this.KEY_A.setState(false);
+                this.KEY_W.setState(true);
             } else if (this.going == 'D'){
-                this.myRobot.keyRelease(KeyEvent.VK_D);
-                this.myRobot.keyPress(KeyEvent.VK_W);
+                this.KEY_D.setState(false);
+                this.KEY_W.setState(true);
             }
             this.goingForward = true;
         } else if (this.velociTimer.isStopped() && this.goingForward){
             this.velociTimer.reset();
-            this.myRobot.keyRelease(KeyEvent.VK_W);
-            this.globalCooldown = 20;
+            this.KEY_W.setState(false);
+            const newLocal = this;
+            newLocal.globalCooldown = 20;
             this.goingForward = false;
 
             if (this.going == 'A'){
                 this.going = 'D';
-                this.myRobot.keyPress(KeyEvent.VK_D);
+                this.KEY_D.setState(true);
             } else if (this.going == 'D'){
                 this.going = 'A';
-                this.myRobot.keyPress(KeyEvent.VK_A);
+                this.KEY_A.setState(true);
             }
         }
     }

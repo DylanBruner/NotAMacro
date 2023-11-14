@@ -50,6 +50,8 @@ export default class Cane extends Macro {
         this.macroType = "Farming";
         
         this.myRobot = new robot();
+        this.KEY_S = Client.getKeyBindFromKey(Keyboard.KEY_S);
+        this.KEY_A = Client.getKeyBindFromKey(Keyboard.KEY_A);
 
         this.velociTimer = new VelociTimer(4);
 
@@ -60,20 +62,20 @@ export default class Cane extends Macro {
 
     forward(){
         this.going = "forward";
-        this.myRobot.keyRelease(KeyEvent.VK_S);
-        this.myRobot.keyPress(KeyEvent.VK_A);
+        this.KEY_S.setState(false);
+        this.KEY_A.setState(true);
     }
 
     backward(){
         this.going = "backward";
-        this.myRobot.keyRelease(KeyEvent.VK_A);
-        this.myRobot.keyPress(KeyEvent.VK_S);
+        this.KEY_A.setState(false);
+        this.KEY_S.setState(true);
     }
 
     stop(){
         this.myRobot.mouseRelease(InputEvent.BUTTON1_MASK);
-        this.myRobot.keyRelease(KeyEvent.VK_S);
-        this.myRobot.keyRelease(KeyEvent.VK_A);
+        this.KEY_S.setState(false);
+        this.KEY_A.setState(false);
     }
 
     on_pause(){

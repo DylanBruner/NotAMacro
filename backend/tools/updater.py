@@ -16,6 +16,7 @@ try:
     print(f"{PREFIX}&aChecking for updates...")
     manifest = requests.get('https://dylanbruner.github.io/NotAMacro/manifest.json').json()
     latest = getLatestVersion(manifest)
+    print(f"{PREFIX}&aLatest version: &c{latest['version']}&a")
 
     os.makedirs(f'{MODULE_FOLDER}/temp', exist_ok=True)
 
