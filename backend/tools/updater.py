@@ -1,6 +1,6 @@
 import requests, os, pyzipper, shutil, sys, traceback
 
-PREFIX = "&7[§cNotAMacro&7/&aUpdater&7]&r "
+PREFIX = "&7[&cNotAMacro&7/&aUpdater&7]&r "
 
 def getLatestVersion(manifest: dict) -> str:
     versions = [x['version'] for x in manifest]
@@ -21,18 +21,18 @@ try:
     os.makedirs(f'{MODULE_FOLDER}/temp', exist_ok=True)
 
     print(f"{PREFIX}&cDownloading update...")
-    with open(f'{MODULE_FOLDER}/temp/update.7z', 'wb') as f:
+    with open(os.path.join(MODULE_FOLDER, '/temp/update.7z', 'wb')) as f:
         f.write(requests.get(f"https://dylanbruner.github.io/NotAMacro/release/{latest['filename']}").content)
 
     print(f"{PREFIX}&cExtracting update...")
-    with pyzipper.AESZipFile(f'{MODULE_FOLDER}/temp/update.7z') as zf:
+    with pyzipper.AESZipFile(os.path.join(MODULE_FOLDER, '/temp/update.7z')) as zf:
         old = os.getcwd()
         os.chdir(f'{MODULE_FOLDER}')
         zf.extractall(pwd='BDkhZ9jDZdOernS0gLqHowMatI030vUg'.encode('utf-8'), members=[x for x in zf.namelist() if not x.startswith('tools/')])
         os.chdir(old)
 
     print(f"{PREFIX}&cCleaning up...")
-    shutil.rmtree(f'{MODULE_FOLDER}/temp')
+    shutil.rmtree(os.path.join(MODULE_FOLDER, '/temp'))
 
     print(f"{PREFIX}&aUpdate complete!")
 except Exception as e:
