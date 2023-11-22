@@ -1,5 +1,5 @@
-import Macro from "./macro";
-import Config from ".././data/Config";
+import Macro from "../macro";
+import Config from "../../data/Config";
 
 const PREFIX = "§7[§cNotAMacro§7] §r";
 

@@ -1,7 +1,7 @@
-import Config from ".././data/Config";
-import Safety from "../helpers/safety";
-import Macro from "./macro";
-import Consts from "../data/shared";
+import Config from "../../data/Config";
+import Safety from "../../helpers/safety";
+import Macro from "../macro";
+import Consts from "../../data/shared";
 
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
 

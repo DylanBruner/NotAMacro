@@ -1,4 +1,4 @@
-import Macro from "./macro";
+import Macro from "../macro";
 
 var robot = Java.type("java.awt.Robot");
 var InputEvent = Java.type("java.awt.event.InputEvent");

@@ -1,7 +1,7 @@
 //-50.9
-import Config from "../data/Config";
-import Macro from "./macro";
-import VelociTimer from "../helpers/velocitimer";
+import Config from "../../data/Config";
+import Macro from "../macro";
+import VelociTimer from "../../helpers/velocitimer";
 
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
 
