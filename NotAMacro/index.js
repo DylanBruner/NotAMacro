@@ -145,73 +145,6 @@ register("guiOpened", () => {
     }
 });
 
-pauseKey.registerKeyPress(Utils.createKeyPressHandler((isSinglePress) => {
-    let setmacro = null;
-    if (scope.macro != null && ((scope.macro.macroName != Utils.deriveMacroType() && scope.macroEnabled) || scope.macro.macroName == Utils.deriveMacroType())) { // if we already have a macro loaded just toggle it
-        scope.macroEnabled = !scope.macroEnabled;
-        if (!scope.macroEnabled){
-            ChatLib.chat(PREFIX + "§cPaused!");
-            scope.macro.on_pause();
-            scope.failsafe.on_pause();
-        } else {
-            ChatLib.chat(PREFIX + "§aResuming!");
-            scope.macro.on_resume();
-            scope.failsafe.on_resume();
-            scope.wiggle.reset();
-        }
-
-        return;
-    } else if (!scope.macroEnabled && scope.macro != null) {
-        scope.macro = null;
-    }
-
-    if (!isSinglePress){
-        ChatLib.chat(PREFIX + "§cOverriding smart picker!");
-        setmacro = new macros[Cfg.SelectedMacro](scope);
-    } else {
-        const macroName = Utils.deriveMacroType();
-        if (macroName == null) {ChatLib.chat(PREFIX + "§cFailed to smart pick macro!"); return;}
-
-        for (var macro of macros){
-            if (macro.macroName == macroName){
-                setmacro = new macro(scope);
-                break;
-            }
-        }
-
-        if (setmacro == null){
-            ChatLib.chat(PREFIX + "§cFailed to smart pick macro! (Macro not found, name: " + macroName + ")");
-            return;
-        }
-        Cfg.SelectedMacro = setmacro.macroID;
-    }
-
-    if (setmacro == null){
-        ChatLib.chat(PREFIX + "§cThat's weird....");
-        return;
-    }
-    
-    // set & start the macro
-    if (scope.macro == null){
-        scope.macroEnabled = !scope.macroEnabled;
-        if (scope.macroEnabled){
-            if (Cfg.SelectedMacro > macros.length - 1){
-                ChatLib.chat(PREFIX + "§cThat's weird....");
-                scope.macroEnabled = false;
-                return;
-            } else {
-                scope.macro = setmacro;
-            }
-
-            ChatLib.chat(PREFIX + "§aStarting §e" + scope.macro.macroName + "§a macro!");
-            scope.macro.on_start();
-            scope.failsafe.on_resume();
-            scope.wiggle.reset();
-        }
-    }
-}));
-    
-
 register("tick", () => {
     generalUtils._tick(scope);
 
@@ -249,6 +182,34 @@ register("tick", () => {
         scope.macro.on_pause(); // Only really needed for WarpBack but ig all of them can use this
         scope.macro = null;
         scope.macroEnabled = false;
+    } else if (scope.macro == null && pauseKey.isPressed()){
+        scope.macroEnabled = !scope.macroEnabled;
+        if (scope.macroEnabled){
+            if (Cfg.SelectedMacro > macros.length - 1){
+                ChatLib.chat(PREFIX + "§cThat's weird....");
+                scope.macroEnabled = false;
+                return;
+            } else {
+                scope.macro = new macros[Cfg.SelectedMacro](scope);
+            }
+
+            ChatLib.chat(PREFIX + "§aStarting §e" + scope.macro.macroName + "§a macro!");
+            scope.macro.on_start();
+            scope.failsafe.on_resume();
+            scope.wiggle.reset();
+        }
+    } else if (scope.macro != null && pauseKey.isPressed()){
+        scope.macroEnabled = !scope.macroEnabled;
+        if (!scope.macroEnabled){
+            ChatLib.chat(PREFIX + "§cPaused!");
+            scope.macro.on_pause();
+            scope.failsafe.on_pause();
+        } else {
+            ChatLib.chat(PREFIX + "§aResuming!");
+            scope.macro.on_resume();
+            scope.failsafe.on_resume();
+            scope.wiggle.reset();
+        }
     }
 
     if (scope.macroEnabled && scope.macro != null){
