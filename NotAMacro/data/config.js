@@ -57,7 +57,7 @@ class Config {
     @SelectorProperty({
         name: "Selected Macro",
         category: "General",
-        options: ["Mushroom", "Cane", "AD Macro", "Island Forager", "Warp Back", "Cactus", "Cocoa", "Pumpkin/Melon", "Fishing Helper"],
+        options: ["Mushroom", "Cane", "AD Macro", "Island Forager", "Warp Back", "Cactus", "Cocoa", "Pumpkin/Melon", "Fishing Helper", "Tiny Dancer"],
     })
     SelectedMacro = 0;
 

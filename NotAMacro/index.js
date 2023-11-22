@@ -16,6 +16,7 @@ import request from "../requestV2";
 import Consts from "./data/shared";
 import Utils from "./helpers/utils";
 import Wiggle from "./helpers/wiggle";
+import TinyDancer from "./macros/misc/tinydancer";
 
 const JavaRuntime = Java.type("java.lang.Runtime");
 const JavaScanner = Java.type("java.util.Scanner");
@@ -94,7 +95,7 @@ const generalUtils = new GeneralUtils();
 const macros = [
     Mushroom, Cane, ADMacro, IslandForager, 
     WarpBack, CactusMacro, CocoaMacro, PumpkinMelonMacro,
-    FishingHelper
+    FishingHelper, TinyDancer
 ];
 
 for (macro of macros){
