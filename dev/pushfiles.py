@@ -9,7 +9,7 @@ try:
 except FileNotFoundError:
     pass
 print('Copying new files...')
-shutil.copytree(DEV_DIR, GAME_DIR)
+shutil.copytree(DEV_DIR, GAME_DIR, ignore=shutil.ignore_patterns('config.toml'))
 # copy all files except .toml files
 # for file in os.listdir(DEV_DIR):
 #     if file.endswith('.toml'):

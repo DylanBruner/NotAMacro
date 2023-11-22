@@ -5,6 +5,8 @@ var InputEvent = Java.type("java.awt.event.InputEvent");
 var KeyEvent = Java.type("java.awt.event.KeyEvent");
 
 export default class FishingHelper extends Macro {
+    static macroName = "Fishing Helper";
+
     constructor() {
         super();
 

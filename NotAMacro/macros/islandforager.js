@@ -17,6 +17,8 @@ const STAGE_WAITING_FOR_GROWTH = 3;
 const STAGE_BREAKING = 4;
 const STAGE_WAITING_FOR_BREAK = 5;
 const STAGE_WAITING_FOR_PLACE = 6;
+const STAGE_AUTOPET = 7;
+const STAGE_WAITING_FOR_AUTOPET = 8;
 
 debug = (msg) => {
     if (Config.IslandForagerDebugMode) {
@@ -25,6 +27,8 @@ debug = (msg) => {
 };
 
 export default class IslandForager extends Macro {
+    static macroName = "Island Forager";
+
     static getConfig() {
         let config = {
             IslandForagerSingleMode: {
@@ -34,6 +38,27 @@ export default class IslandForager extends Macro {
                     name: "Single Mode",
                     description: "Farms a single tree",
                     category: "Island Forager",
+                },
+            },
+            IslandForagerAutopet: {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "Autopet",
+                    description: "Uses a rod to switch to an ocelot pet",
+                    category: "Island Forager",
+                },
+            },
+            IslandForagerRodSlot: {
+                type: PropertyType.SLIDER,
+                default: 1,
+                config: {
+                    name: "Rod Slot",
+                    description: "The slot that has the rod",
+                    category: "Island Forager",
+                    subcategory: "Inventory",
+                    min: 1,
+                    max: 9,
                 },
             },
             IslandForagerSaplingSlot: {
@@ -209,6 +234,15 @@ export default class IslandForager extends Macro {
         register("command", (yaw, pitch) => {
             this.gotoPY(yaw, pitch);
         }).setName("goto");
+
+        register('chat', (event) => {
+            const message = ChatLib.getChatMessage(event).removeFormatting();
+            if (message.startsWith('Autopet') ) {
+                this.stage = STAGE_PLANTING;
+                this.globalcooldown = 8;
+                debug("§3Detected autopet, planting saplings");
+            }
+        });
 
         debug("§cIsland Forager Initialized");
     }
@@ -519,7 +553,11 @@ export default class IslandForager extends Macro {
             }
 
             if (this.stage == STAGE_WAITING_FOR_BREAK && woodCount == 0) {
-                this.stage = STAGE_PLANTING;
+                this.stage = Config.IslandForagerAutopet ? STAGE_AUTOPET : STAGE_PLANTING;
+                if (Config.IslandForagerAutopet) {
+                    this.setSlot(Config.IslandForagerRodSlot - 1);
+                }
+
                 debug("§3Detected tree break, planting saplings");
             } else if (this.stage == STAGE_WAITING_FOR_GROWTH && saplingCount == 0) {
                 this.stage = STAGE_BREAKING;

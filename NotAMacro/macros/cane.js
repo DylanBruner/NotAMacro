@@ -9,6 +9,8 @@ const InputEvent = Java.type('java.awt.event.InputEvent');
 const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class Cane extends Macro {
+    static macroName = "Cane";
+    
     static getConfig(){
         return {
             CaneTimerMode: {

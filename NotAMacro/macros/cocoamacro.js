@@ -10,6 +10,8 @@ const InputEvent = Java.type('java.awt.event.InputEvent');
 const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class CocoaMacro extends Macro {
+    static macroName = "Cocoa";
+
     static getConfig() {
         return {
             CocoaStartDirection: {

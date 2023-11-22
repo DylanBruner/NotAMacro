@@ -74,6 +74,8 @@ export default class Mushroom extends Macro {
         }
     }
 
+    static macroName = "Mushroom";
+
     constructor() {
         this.macroID = 0;
         this.macroName = "Mushroom";

@@ -9,6 +9,8 @@ const InputEvent = Java.type('java.awt.event.InputEvent');
 const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class CactusMacro extends Macro {
+    static macroName = "Cactus";
+    
     static getConfig(){
         return {
             'CactusStartDirection': {

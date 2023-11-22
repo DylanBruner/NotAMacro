@@ -8,6 +8,8 @@ var InputEvent = Java.type('java.awt.event.InputEvent');
 var KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class WarpBack extends Macro {
+    static macroName = "WarpBack";
+    
     constructor(){
         super();
 

@@ -9,6 +9,8 @@ const InputEvent = Java.type('java.awt.event.InputEvent');
 const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class ADMacro extends Macro {
+    static macroName = "A/D";
+    
     static getConfig(){
         return {
             ADStartDirection: {

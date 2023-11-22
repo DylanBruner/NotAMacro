@@ -1,3 +1,17 @@
+const TOOLMAP = {
+    'Fungi Cutter': 'Mushroom',
+    'Cactus Knife': 'Cactus',
+    'Newton Nether Warts Hoe': 'A/D',
+    'Pythagorean Potato Hoe': 'A/D',
+    'Euclid\'s Wheat Hoe': 'A/D',
+    'Pumpkin Dicer': 'Pumpkin',
+    'Melon Dicer': 'Melon',
+    'Cocoa Chopper': 'Cocoa',
+    'Turing Sugar Cane Hoe': 'Cane',
+
+    'Treecapitator': 'Island Forager',
+}
+
 export default class Utils {
     static greaterVersion(v1, v2){
         if (v1 == v2) return false;
@@ -23,5 +37,26 @@ export default class Utils {
 
     static escapeUrl(url){
         return url.replace(/ /g, "%20");
+    }
+
+    static deriveMacroType(){
+        const toolname = Player.getHeldItem().getName().removeFormatting();
+
+        for (var [key, value] of Object.entries(TOOLMAP)){
+            if (toolname.includes(key)) return value;
+        }
+        return null;
+    }
+
+    static createKeyPressHandler(callback) {
+        let lastKeyPressTime = 0;
+      
+        return function () {
+          const currentTime = Date.now();
+          const timeDiff = currentTime - lastKeyPressTime;
+          lastKeyPressTime = currentTime;
+      
+          callback(timeDiff > 300 || timeDiff < 0);
+        };
     }
 }

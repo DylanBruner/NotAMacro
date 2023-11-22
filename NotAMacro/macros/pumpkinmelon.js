@@ -9,6 +9,8 @@ const InputEvent = Java.type('java.awt.event.InputEvent');
 const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class PumpkinMelonMacro extends Macro {
+    static macroName = "PumpkinMelon";
+    
     static getConfig() {
         return {
             PumpkinMelonStartDirection: {
