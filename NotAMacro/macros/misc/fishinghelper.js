@@ -2,7 +2,6 @@ import Macro from "../macro";
 
 var robot = Java.type("java.awt.Robot");
 var InputEvent = Java.type("java.awt.event.InputEvent");
-var KeyEvent = Java.type("java.awt.event.KeyEvent");
 
 export default class FishingHelper extends Macro {
     static macroName = "Fishing Helper";
@@ -12,37 +11,33 @@ export default class FishingHelper extends Macro {
 
         this.macroName = "Fishing Helper";
         this.macroID = 8;
+        this.plingcd = 0;
 
         this.myRobot = new robot();
 
         this.hook();
-        ChatLib.chat("&7[&bFishingHelper&7] &rMacro loaded!");
     }
 
     recast() {
         this.myRobot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
         setTimeout(() => {
             this.myRobot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
-        }, Math.random() * 75 + 50); // 25-100ms
+        }, 25); // 25-100ms
     }
 
     hook() {
-        this.soundHook = register(
-            "soundPlay",
-            (position, method, vol, pitch, category, event) => {
-                if (method.includes("note.pling")) {
+        this.soundHook = register("soundPlay", (position, method, vol, pitch, category, event) => {
+                if (method.includes("note.pling") && Date.now() - this.plingcd > 500) {
+                    this.plingcd = Date.now();
                     setTimeout(() => {
                         this.myRobot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
                         setTimeout(() => {
-                            this.myRobot.mouseRelease(
-                                InputEvent.BUTTON3_DOWN_MASK
-                            );
-                            setTimeout(
-                                this.recast(),
-                                Math.random() * 200 + 1500
-                            ); // 100-300ms
-                        }, Math.random() * 75 + 25); // 25-100ms
-                    }, Math.random() * 100 + 100); // 100-200ms
+                            this.myRobot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+                            setTimeout(() => {
+                                this.recast();
+                            }, Math.floor(Math.random() * 100) + 100); // 100-200ms
+                        }, Math.floor(Math.random() * 100) + 25); // 25-125ms
+                    }, Math.floor(Math.random() * 100) + 25); // 25-125ms
                 }
             }
         );

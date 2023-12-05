@@ -1,23 +1,6 @@
 import Macro from "../macro.js";
 
-// Move!
-// Sneak!
-// Stand
-// Sneak! and Jump!
-// Stand! and Jump!
-// Sneak! and Don't Jump!
-// Stand! and Don't Jump!
-
-// -264.5 33 -107.5
-// -264.5 33 -105.5
-// -262.5 33 -105.5
-// -262.5 33 -107.5
-
-const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
-
 const robot = Java.type('java.awt.Robot');
-const InputEvent = Java.type('java.awt.event.InputEvent');
-const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 
 const TITLE_COOLDOWN = 1000; // 1 second

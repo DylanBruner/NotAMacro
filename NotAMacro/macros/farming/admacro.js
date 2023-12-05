@@ -65,7 +65,12 @@ export default class ADMacro extends Macro {
         this.stop();
     }
 
+    on_start(){
+        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
+    }
+
     on_resume(){
+        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
         this.velociTimer.reset();
         if (this.going == 'left'){
             this.left();
@@ -76,14 +81,12 @@ export default class ADMacro extends Macro {
 
     left(){
         this.going = "left";
-        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
         this.KEY_D.setState(false);
         this.KEY_A.setState(true);
     }
 
     right(){
         this.going = "right";
-        this.myRobot.mousePress(InputEvent.BUTTON1_MASK);
         this.KEY_A.setState(false);
         this.KEY_D.setState(true);
     }
