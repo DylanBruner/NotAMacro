@@ -1,7 +1,7 @@
 {
   "name": "Not A Macro",
   "creator": "CheatersGetBanned",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "cheatersgetbanned",
   "requires": ["Vigilance", "requestV2"],
   "entry": "index.js",

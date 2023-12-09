@@ -38,6 +38,15 @@ with pyzipper.AESZipFile(os.path.join(OUTPUT_PATH, f"{metadata['name']}-v{metada
     for root, dirs, files in os.walk(TEMP_PATH):
         for file in files:
             zf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(TEMP_PATH, 'NotAMacro')))
+        
+    # modify the metadata.json within the zipfile to set debug to false
+    # print("Setting debug to false...", end="")
+    # data = zf.read('metadata.json')
+    # metadata = json.loads(data.decode('utf-8'))
+    # metadata['debug'] = False
+    # data = json.dumps(metadata).encode('utf-8')
+    # zf.writestr('metadata.json', data)
+    # print("Done!")
 
 
 shutil.rmtree(TEMP_PATH)

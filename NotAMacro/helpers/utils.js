@@ -59,4 +59,10 @@ export default class Utils {
           callback(timeDiff > 300 || timeDiff < 0);
         };
     }
+
+    static sleep(ms) {
+        start = Date.now();
+        while (Date.now() - start < ms);
+        
+    }
 }

@@ -17,6 +17,8 @@ import Consts from "./data/shared";
 import Utils from "./helpers/utils";
 import Wiggle from "./helpers/wiggle";
 import TinyDancer from "./macros/misc/tinydancer";
+import MovementLib from "./helpers/movementlib";
+import Recordings from "./data/recordings";
 
 const JavaRuntime = Java.type("java.lang.Runtime");
 const JavaScanner = Java.type("java.util.Scanner");
@@ -78,6 +80,8 @@ register('command', () => {
     }, 1);
 }).setName("namupdate");
 
+const mlib = new MovementLib(); // init movement lib
+
 class Scope {
     constructor(){
         this.macroEnabled = false;
@@ -87,6 +91,7 @@ class Scope {
         this.wiggle = new Wiggle();
         this.antiMacroLastAttempt = 0;
         this.PREFIX = PREFIX;
+        this.mlib = mlib;
     }
 }
 
@@ -95,10 +100,12 @@ const generalUtils = new GeneralUtils();
 const macros = [
     Mushroom, Cane, ADMacro, IslandForager, 
     WarpBack, CactusMacro, CocoaMacro, PumpkinMelonMacro,
-    FishingHelper, TinyDancer
+    FishingHelper, TinyDancer, Consts.debug ? MovementLib : null
 ];
 
+
 for (macro of macros){
+    if (macro == null) continue;
     if (macro.getConfig != undefined){
         Cfg.registerTemplate(macro.getConfig());
     }
@@ -137,7 +144,7 @@ register("command", () => {
 }).setName("nam")
 
 register("guiOpened", () => {
-    if (scope.macroEnabled){
+    if (scope.macroEnabled && Cfg.FailSafeOpenGUI){
         scope.macroEnabled = false;
         scope.macro.on_pause();
         scope.failsafe.on_pause();

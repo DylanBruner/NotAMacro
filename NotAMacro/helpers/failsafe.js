@@ -191,6 +191,16 @@ export default class Failsafe {
                     subcategory: "Slot Change"
                 }
             },
+            'FailSafeOpenGUI': {
+                type: PropertyType.SWITCH,
+                default: true,
+                config: {
+                    name: "Open GUI",
+                    description: "Pause the macro if a GUI is opened",
+                    category: "Fail-Safes",
+                    subcategory: "Misc"
+                }
+            }
         }
     }
 
