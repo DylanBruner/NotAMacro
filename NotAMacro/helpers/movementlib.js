@@ -58,7 +58,7 @@ export default class MovementLib extends Macro {
                 }
                 ChatLib.chat("Recording: " + this.recording);
             } else if (action.toLowerCase() == 'stop') {
-                this.recording = this.playing = false;
+                this.stop();
                 ChatLib.chat("Stopped")
             } else if (action.toLowerCase() == 'play') {
                 this.playing = !this.playing;
@@ -91,7 +91,7 @@ export default class MovementLib extends Macro {
         } else if (this.playing){
             if (this.playbackFrame >= this.playbackRecording.length){
                 this.playing = false;
-                ChatLib.chat("Reached end of recording");
+                // ChatLib.chat("Reached end of recording");
                 return;
             }
 
@@ -121,6 +121,11 @@ export default class MovementLib extends Macro {
         }
     }
 
+    stop(){
+        this.recording = false;
+        this.playing = false;
+    }
+
     playRecording(recording, returnToStart = false){
         this.playing = true;
         this.playbackFrame = 0;
@@ -128,5 +133,6 @@ export default class MovementLib extends Macro {
 
         this.startYaw = Player.getYaw();
         this.startPitch = Player.getPitch();
+        ChatLib.chat("Playing recording with " + recording.length + " frames (" + (recording.length / 20).toFixed(2) + "s)");
     }
 }

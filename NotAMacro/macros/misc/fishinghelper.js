@@ -21,7 +21,9 @@ export default class FishingHelper extends Macro {
         this.macroID = 8;
         this.plingcd = 0;
         this.failcd = 0;
+        this.enabled = true;
         this.nextWiggleTime = -1;
+        this.bobberCastTime = -1;
 
         this.originalSlot = -1;
         this.calls = 0;
@@ -123,14 +125,15 @@ export default class FishingHelper extends Macro {
 
     hook() {
         this.soundHook = register("soundPlay", (position, method, vol, pitch, category, event) => {
-                if (method.includes("note.pling") && Date.now() - this.plingcd > 500 && pitch == 1) {
-                    this.plingcd = Date.now();
-                    this.actualrecast();
+            if (!this.enabled) return;
+            if (method.includes("note.pling") && Date.now() - this.plingcd > 500 && pitch == 1) {
+                this.plingcd = Date.now();
+                this.actualrecast();
 
-                } else if (method.includes('random.successful_hit') && pitch == 0.7936508059501648 && Date.now() - this.failcd > 500) {
-                    this.failcd = Date.now();
-                    this.actualrecast();
-                }
+            } else if (method.includes('random.successful_hit') && pitch == 0.7936508059501648 && Date.now() - this.failcd > 500) {
+                this.failcd = Date.now();
+                this.actualrecast();
+            }
                 // if (!method.includes('fire.fire') && !method.includes('mob.') && !method.includes('.player'))
                 //     ChatLib.chat(`${method} ${vol} ${pitch}`)
                 // game.neutral.swim 1 0.4920634925365448 (4) << golden fish
@@ -138,6 +141,8 @@ export default class FishingHelper extends Macro {
         );
 
         this.chathook = register('chat', (event) => {
+            if (!this.enabled) return;
+
             const message = ChatLib.getChatMessage(event);
             if (message.removeFormatting().includes('A Lava Flame flies out from beneath the lava.') && Config.FishingHelperAutoKill){
                 setTimeout(() => {
@@ -167,18 +172,28 @@ export default class FishingHelper extends Macro {
     }
 
     on_pause() {
-        this.soundHook.unregister();
-        this.chathook.unregister();
+        this.enabled = false;
+        this.scope.mlib.stop();
+    }
+
+    on_start() {
+        this.on_resume();
     }
 
     on_resume() {
+        this.enabled = true;
+        this.nextWiggleTime = Date.now() + Math.floor(Math.random() * 15000) + 40000; // 40-55s
         this.hook();
     }
 
     tick() {
+        if (!this.enabled) return;
         if (this.nextWiggleTime == -1 || Date.now() > this.nextWiggleTime){
             this.nextWiggleTime = Date.now() + Math.floor(Math.random() * 15000) + 40000; // 40-55s
-            this.scope.mlib.playRecording(Recordings.FISHING_HELPER_WIGGLE, true);
+            if (!Config.FishingHelperAutoWiggle) return;
+            // this.scope.mlib.playRecording(Recordings.FISHING_HELPER_WIGGLES[Math.floor(Math.random() * Recordings.FISHING_HELPER_WIGGLES.length)], true);
+            const wiggle = Recordings.FISHING_HELPER_WIGGLE[Math.floor(Math.random() * Recordings.FISHING_HELPER_WIGGLE.length)];
+            this.scope.mlib.playRecording(wiggle, true);
         } 
     }
 }
