@@ -126,6 +126,10 @@ export default class MovementLib extends Macro {
         this.playing = false;
     }
 
+    isPlaying(){
+        return this.playing;
+    }
+
     playRecording(recording, returnToStart = false){
         this.playing = true;
         this.playbackFrame = 0;

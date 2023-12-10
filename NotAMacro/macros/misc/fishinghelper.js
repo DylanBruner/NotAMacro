@@ -73,6 +73,17 @@ export default class FishingHelper extends Macro {
                     category: "Fishing Helper"
                 }
             },
+            FishingHelperReelDelay: {
+                type: PropertyType.SLIDER,
+                default: 0,
+                config: {
+                    name: "Reel Delay",
+                    description: "Delay between reeling in the fish (for slugfish basiclly, 0 to disable)",
+                    category: "Fishing Helper",
+                    min: 0,
+                    max: 60
+                }
+            },
         }
     }
 
@@ -80,6 +91,7 @@ export default class FishingHelper extends Macro {
         this.myRobot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
         setTimeout(() => {
             this.myRobot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+            this.bobberCastTime = Date.now();
         }, 25); // 25-100ms
     }
 
@@ -127,6 +139,12 @@ export default class FishingHelper extends Macro {
         this.soundHook = register("soundPlay", (position, method, vol, pitch, category, event) => {
             if (!this.enabled) return;
             if (method.includes("note.pling") && Date.now() - this.plingcd > 500 && pitch == 1) {
+                // if the bobber was cast less than config.FishingHelperReelDelay seconds ago, don't recast
+                if (Date.now() - this.bobberCastTime < Config.FishingHelperReelDelay * 1000) {
+                    ChatLib.chat(`§cReel delay is ${Config.FishingHelperReelDelay} (` + Utils.formatTime(Config.FishingHelperReelDelay * 1000 - (Date.now() - this.bobberCastTime)) + ` left)`);
+                    return;
+                }
+
                 this.plingcd = Date.now();
                 this.actualrecast();
 
@@ -182,18 +200,31 @@ export default class FishingHelper extends Macro {
 
     on_resume() {
         this.enabled = true;
+        this.bobberCastTime = Date.now();
         this.nextWiggleTime = Date.now() + Math.floor(Math.random() * 15000) + 40000; // 40-55s
         this.hook();
     }
 
     tick() {
-        if (!this.enabled) return;
+        if (this.scope.mlib.isPlaying()) {
+            if (Player.getHeldItem() == null || !Player.getHeldItem().getName().includes('Rod')) {
+                ChatLib.chat("§cNot holding a rod!");
+                this.scope.mlib.stop();
+                return;
+            }
+        }
+
         if (this.nextWiggleTime == -1 || Date.now() > this.nextWiggleTime){
             this.nextWiggleTime = Date.now() + Math.floor(Math.random() * 15000) + 40000; // 40-55s
             if (!Config.FishingHelperAutoWiggle) return;
+            if (Player.getHeldItem() == null || !Player.getHeldItem().getName().includes('Rod')) {
+                ChatLib.chat("§cNot holding a rod!");
+                return;
+            }
+
             // this.scope.mlib.playRecording(Recordings.FISHING_HELPER_WIGGLES[Math.floor(Math.random() * Recordings.FISHING_HELPER_WIGGLES.length)], true);
             const wiggle = Recordings.FISHING_HELPER_WIGGLE[Math.floor(Math.random() * Recordings.FISHING_HELPER_WIGGLE.length)];
             this.scope.mlib.playRecording(wiggle, true);
-        } 
+        }
     }
 }

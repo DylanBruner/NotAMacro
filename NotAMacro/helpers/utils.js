@@ -65,4 +65,11 @@ export default class Utils {
         while (Date.now() - start < ms);
         
     }
+
+    static formatTime(time){
+        let seconds = Math.floor(time / 1000);
+        let minutes = Math.floor(seconds / 60);
+        seconds -= minutes * 60;
+        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+    }
 }
