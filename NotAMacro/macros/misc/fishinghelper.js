@@ -8,6 +8,7 @@ import Recordings from "../../data/recordings";
 const robot = Java.type("java.awt.Robot");
 const InputEvent = Java.type("java.awt.event.InputEvent");
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+const MouseInfo = Java.type("java.awt.MouseInfo");
 
 export default class FishingHelper extends Macro {
     static macroName = "Fishing Helper";
@@ -24,6 +25,8 @@ export default class FishingHelper extends Macro {
         this.enabled = true;
         this.nextWiggleTime = -1;
         this.bobberCastTime = -1;
+
+        this.startMouseLocation = MouseInfo.getPointerInfo().getLocation();
 
         this.originalSlot = -1;
         this.calls = 0;
@@ -212,6 +215,11 @@ export default class FishingHelper extends Macro {
                 this.scope.mlib.stop();
                 return;
             }
+            if (this.startMouseLocation != null && this.startMouseLocation.distance(MouseInfo.getPointerInfo().getLocation()) > 1) {
+                ChatLib.chat("§cMouse moved!");
+                this.scope.mlib.stop();
+                return;
+            }
         }
 
         if (this.nextWiggleTime == -1 || Date.now() > this.nextWiggleTime){
@@ -225,6 +233,7 @@ export default class FishingHelper extends Macro {
             // this.scope.mlib.playRecording(Recordings.FISHING_HELPER_WIGGLES[Math.floor(Math.random() * Recordings.FISHING_HELPER_WIGGLES.length)], true);
             const wiggle = Recordings.FISHING_HELPER_WIGGLE[Math.floor(Math.random() * Recordings.FISHING_HELPER_WIGGLE.length)];
             this.scope.mlib.playRecording(wiggle, true);
+            this.startMouseLocation = MouseInfo.getPointerInfo().getLocation();
         }
     }
 }

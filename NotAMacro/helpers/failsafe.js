@@ -2,6 +2,7 @@ import Config from ".././data/Config";
 import request from "../../requestV2";
 
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+const MouseInfo = Java.type("java.awt.MouseInfo");
 
 const BlockChangePacket = Java.type("net.minecraft.network.play.server.S23PacketBlockChange");
 const AllowedBlockModifications = [
@@ -97,7 +98,16 @@ export default class Failsafe {
                     max: 10
                 }
             },
-            'FailSafeTeleport': {
+            'FailSafeMouseMove': {
+                type: PropertyType.SWITCH,
+                default: false,
+                config: {
+                    name: "Mouse Move",
+                    description: "Pause the macro if the mouse moves",
+                    category: "Fail-Safes",
+                    subcategory: "Movement"
+                }
+            }, 'FailSafeTeleport': {
                 type: PropertyType.SWITCH,
                 default: false,
                 config: {
@@ -218,6 +228,9 @@ export default class Failsafe {
         this.lastY     = 0;
         this.lastZ     = 0;
 
+        this.lastMouseX = MouseInfo.getPointerInfo().getLocation().getX();
+        this.lastMouseY = MouseInfo.getPointerInfo().getLocation().getY();
+
         this.macroRef  = null;
 
         register("worldUnload", this.onWorldUnload.bind(this));
@@ -300,6 +313,17 @@ export default class Failsafe {
             return;
         }
 
+        // Mouse Move ===========================================================
+        if (Config.FailSafeMouseMove){
+            let mx = MouseInfo.getPointerInfo().getLocation().getX();
+            let my = MouseInfo.getPointerInfo().getLocation().getY();
+            if (Math.abs(mx - this.lastMouseX) > 1 || Math.abs(my - this.lastMouseY) > 1){
+                this.tripReason = "Mouse Move";
+                this.tripped = true;
+                return;
+            }
+        }
+
         // Slot Change ==========================================================
         if (Config.FailSafeSlotChange && Player.getHeldItemIndex() != this.slot){
             this.tripReason = "Slot Change";
@@ -370,5 +394,8 @@ export default class Failsafe {
         this.lastY     = Player.getY();
         this.lastZ     = Player.getZ();
         this.slot      = Player.getHeldItemIndex();
+
+        this.lastMouseX = MouseInfo.getPointerInfo().getLocation().getX();
+        this.lastMouseY = MouseInfo.getPointerInfo().getLocation().getY();
     }
 }
