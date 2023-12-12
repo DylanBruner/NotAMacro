@@ -1,4 +1,3 @@
-import Config from ".././data/Config";
 import Macro from "../macros/macro";
 import Safety from "./safety";
 

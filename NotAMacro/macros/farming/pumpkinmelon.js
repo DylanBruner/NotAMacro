@@ -6,7 +6,6 @@ const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
 
 const robot = Java.type('java.awt.Robot');
 const InputEvent = Java.type('java.awt.event.InputEvent');
-const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class PumpkinMelonMacro extends Macro {
     static macroName = "PumpkinMelon";

@@ -1,6 +1,3 @@
-import request from "requestV2";
-import { Promise } from '../../PromiseV2';
-
 const DEV_MODE = true;
 
 export default class Core {

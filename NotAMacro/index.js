@@ -18,7 +18,6 @@ import Utils from "./helpers/utils";
 import Wiggle from "./helpers/wiggle";
 import TinyDancer from "./macros/misc/tinydancer";
 import MovementLib from "./helpers/movementlib";
-import Recordings from "./data/recordings";
 
 const JavaRuntime = Java.type("java.lang.Runtime");
 const JavaScanner = Java.type("java.util.Scanner");

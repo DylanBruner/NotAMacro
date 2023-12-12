@@ -1,4 +1,3 @@
-import Config from '../data/config';
 import Safety from '../helpers/safety';
 import shared from '../data/shared';
 

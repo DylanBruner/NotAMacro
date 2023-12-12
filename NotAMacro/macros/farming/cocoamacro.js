@@ -1,4 +1,3 @@
-//-50.9
 import Config from "../../data/Config";
 import Macro from "../macro";
 import VelociTimer from "../../helpers/velocitimer";
@@ -7,7 +6,6 @@ const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
 
 const robot = Java.type('java.awt.Robot');
 const InputEvent = Java.type('java.awt.event.InputEvent');
-const KeyEvent = Java.type('java.awt.event.KeyEvent');
 
 export default class CocoaMacro extends Macro {
     static macroName = "Cocoa";

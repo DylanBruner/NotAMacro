@@ -2,7 +2,6 @@ import Macro from "../macro";
 import Config from "../../data/Config";
 import Safety from "../../helpers/safety";
 import Utils from "../../helpers/utils";
-import MovementLib from "../../helpers/movementlib";
 import Recordings from "../../data/recordings";
 
 const robot = Java.type("java.awt.Robot");

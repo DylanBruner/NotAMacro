@@ -3,10 +3,6 @@ import Config from "../../data/Config";
 
 const PREFIX = "§7[§cNotAMacro§7] §r";
 
-var robot = Java.type('java.awt.Robot');
-var InputEvent = Java.type('java.awt.event.InputEvent');
-var KeyEvent = Java.type('java.awt.event.KeyEvent');
-
 export default class WarpBack extends Macro {
     static macroName = "WarpBack";
     
