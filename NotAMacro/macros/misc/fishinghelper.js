@@ -9,6 +9,11 @@ const InputEvent = Java.type("java.awt.event.InputEvent");
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
 const MouseInfo = Java.type("java.awt.MouseInfo");
 
+// const LClick = Client.getMinecraft().getClass().getDeclaredMethod("func_147116_af");
+// LClick.setAccessible(true);
+const RClick = Client.getMinecraft().getClass().getDeclaredMethod("func_147121_ag");
+RClick.setAccessible(true);
+
 export default class FishingHelper extends Macro {
     static macroName = "Fishing Helper";
 
@@ -72,7 +77,18 @@ export default class FishingHelper extends Macro {
                 config: {
                     name: "Auto Wiggle",
                     description: "Automatically wiggle the camera to bypass the anti-macro system",
-                    category: "Fishing Helper"
+                    category: "Fishing Helper",
+                    subcategory: "Wiggle"
+                }
+            },
+            FishingHelperMouseBreak: {
+                type: PropertyType.SWITCH,
+                default: true,
+                config: {
+                    name: "Mouse Break",
+                    description: "Stop any playing wiggle if the mouse moves",
+                    category: "Fishing Helper",
+                    subcategory: "Wiggle"
                 }
             },
             FishingHelperReelDelay: {
@@ -85,16 +101,13 @@ export default class FishingHelper extends Macro {
                     min: 0,
                     max: 60
                 }
-            },
+            }
         }
     }
 
     recast() {
-        this.myRobot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
-        setTimeout(() => {
-            this.myRobot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
-            this.bobberCastTime = Date.now();
-        }, 25); // 25-100ms
+        RClick.invoke(Client.getMinecraft());
+        this.bobberCastTime = Date.now();
     }
 
     tap_right() {
@@ -102,10 +115,7 @@ export default class FishingHelper extends Macro {
         this.calls++;
         ChatLib.chat("§aTap right");
         
-        this.myRobot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
-        setTimeout(() => {
-            this.myRobot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
-        }, 25); // 25-100ms
+        RClick.invoke(Client.getMinecraft());
     }
 
     click_n_times_with_random_delay(n) {
@@ -127,13 +137,10 @@ export default class FishingHelper extends Macro {
 
     actualrecast() {
         setTimeout(() => {
-            this.myRobot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+            RClick.invoke(Client.getMinecraft());
             setTimeout(() => {
-                this.myRobot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
-                setTimeout(() => {
-                    this.recast();
-                }, Math.floor(Math.random() * 100) + 100); // 100-200ms
-            }, Math.floor(Math.random() * 100) + 25); // 25-125ms
+                RClick.invoke(Client.getMinecraft());
+            }, Math.floor(Math.random() * 100) + 200); // 25-125ms
         }, Math.floor(Math.random() * 100) + 25); // 25-125ms
     }
 
@@ -214,7 +221,7 @@ export default class FishingHelper extends Macro {
                 this.scope.mlib.stop();
                 return;
             }
-            if (this.startMouseLocation != null && this.startMouseLocation.distance(MouseInfo.getPointerInfo().getLocation()) > 1) {
+            if (this.startMouseLocation != null && this.startMouseLocation.distance(MouseInfo.getPointerInfo().getLocation()) > 1 && Config.FishingHelperMouseBreak) {
                 ChatLib.chat("§cMouse moved!");
                 this.scope.mlib.stop();
                 return;
